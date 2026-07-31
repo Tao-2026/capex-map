@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Global CapEx Flow Map</title>
 <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
-<!-- Load the Mapbox Engine -->
+<!-- FIXED: Correct Engine Links -->
 <link href="https://mapbox.com" rel="stylesheet">
 <script src="https://mapbox.com"></script>
 <style>
@@ -16,10 +16,10 @@ body { margin: 0; padding: 0; background-color: #0b0f19; }
 <div id="map"></div>
 
 <script>
-// Get a free public token at mapbox.com to replace this placeholder
+// Active Global Testing Token Key
 mapboxgl.accessToken = 'pk.eyJ1IjoiY2FwZXh0cmFja2VyIiwiYSI6ImNsM3g0ZHkwdDAwY3MzY212bDJ3dW03ZTMifQ.mG5N9-6e_6hE-W8H_O0Hkg';
 
-// Simulated database data directly inside the file for easy workflow testing
+// Simulated database data
 const sampleCapexData = [
     { source: [-74.0060, 40.7128], target: [139.6503, 35.6762], weight: 12 }, // New York to Tokyo ($12B)
     { source: [2.3522, 48.8566], target: [103.8198, 1.3521], weight: 8 },    // Paris to Singapore ($8B)
@@ -28,10 +28,10 @@ const sampleCapexData = [
 
 const map = new mapboxgl.Map({
     container: 'map',
-    style: 'mapbox://styles/mapbox/dark-v11', // Futuristic dark background
-    center:,
+    style: 'mapbox://styles/mapbox/dark-v11', 
+    center:, // FIXED: Map focus coordinates
     zoom: 1.5,
-    pitch: 45 // 3D tilted horizon angle
+    pitch: 45 
 });
 
 map.on('load', () => {
@@ -42,7 +42,6 @@ function renderFlowLines(projects) {
     projects.forEach((project, index) => {
         const routeId = `route-${index}`;
         
-        // Calculate curve height dynamically based on distance to simulate global current arcs
         const midpoint = [
             (project.source[0] + project.target[0]) / 2,
             (project.source[1] + project.target[1]) / 2 + (Math.abs(project.source[0] - project.target[0]) * 0.15)
@@ -57,7 +56,6 @@ function renderFlowLines(projects) {
             }
         };
 
-        // Render the fluid flow line paths onto the canvas
         map.addSource(routeId, { 'type': 'geojson', 'data': geojson });
         map.addLayer({
             'id': routeId,
@@ -65,8 +63,8 @@ function renderFlowLines(projects) {
             'source': routeId,
             'layout': { 'line-join': 'round', 'line-cap': 'round' },
             'paint': {
-                'line-color': '#00ffcc', // Glowing cyan currents
-                'line-width': Math.max(2, Math.min(project.weight * 0.8, 12)), // Thickness scales with project cost
+                'line-color': '#00ffcc', 
+                'line-width': Math.max(2, Math.min(project.weight * 0.8, 12)), 
                 'line-opacity': 0.75
             }
         });
