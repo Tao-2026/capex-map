@@ -2,74 +2,95 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Global CapEx Flow Map</title>
+<title>Interactive Global Flow Map</title>
 <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
-<!-- Corrected Engine Links -->
-<link href="https://mapbox.com" rel="stylesheet">
-<script src="https://mapbox.com"></script>
+<!-- Load the Free Cesium Globe Engine -->
+<script src="https://cesium.com"></script>
+<link href="https://cesium.com" rel="stylesheet">
 <style>
-body { margin: 0; padding: 0; background-color: #0b0f19; }
-#map { position: absolute; top: 0; bottom: 0; width: 100%; height: 100%; }
+body { margin: 0; padding: 0; background-color: #0b0f19; overflow: hidden; font-family: sans-serif; }
+#cesiumContainer { position: absolute; top: 0; bottom: 0; width: 100%; height: 100%; }
+#toggleContainer {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 1000;
+    background: rgba(11, 15, 25, 0.85);
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: 1px solid #00ffcc;
+}
+.map-btn {
+    background: #0b0f19;
+    color: #00ffcc;
+    border: 1px solid #00ffcc;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 4px;
+    transition: 0.3s;
+}
+.map-btn:hover {
+    background: #00ffcc;
+    color: #0b0f19;
+}
 </style>
 </head>
 <body>
-<div id="map"></div>
+
+<div id="toggleContainer">
+    <button class="map-btn" onclick="toggleMapMode()">🗺️ Toggle Globe / Flat Map</button>
+</div>
+<div id="cesiumContainer"></div>
 
 <script>
-// Active Global Testing Token Key
-mapboxgl.accessToken = 'pk.eyJ1IjoiY2FwZXh0cmFja2VyIiwiYSI6ImNsM3g0ZHkwdDAwY3MzY212bDJ3dW03ZTMifQ.mG5N9-6e_6hE-W8H_O0Hkg';
+// Initialize the free interactive globe container
+const viewer = new Cesium.Viewer('cesiumContainer', {
+    sceneMode: Cesium.SceneMode.SCENE3D, // Start in 3D Globe mode
+    timeline: false,
+    animation: false,
+    homeButton: false,
+    geocoder: false,
+    navigationHelpButton: false,
+    sceneModePicker: false, // Hidden because we built our own custom button
+    baseLayerPicker: false
+});
 
-// Simulated database data
-const sampleCapexData = [
-    { source: [-74.0060, 40.7128], target: [139.6503, 35.6762], weight: 12 }, // New York to Tokyo ($12B)
-    { source: [2.3522, 48.8566], target: [103.8198, 1.3521], weight: 8 },    // Paris to Singapore ($8B)
-    { source: [-0.1278, 51.5074], target: [-43.1729, -22.9068], weight: 5 }   // London to Rio ($5B)
+// Enable smooth mouse dragging and zooming mechanics
+viewer.scene.screenSpaceCameraController.enableRotate = true;
+viewer.scene.screenSpaceCameraController.enableTranslate = true;
+viewer.scene.screenSpaceCameraController.enableZoom = true;
+
+// Toggle between 3D Globe and 2D Flat Map seamlessly
+function toggleMapMode() {
+    const scene = viewer.scene;
+    if (scene.sceneMode === Cesium.SceneMode.SCENE3D) {
+        scene.morphTo2D(1.0); // Smoothly transition to Flat Map over 1 second
+    } else {
+        scene.morphTo3D(1.0); // Smoothly transition back to 3D Globe over 1 second
+    }
+}
+
+// Add simulated flowing CapEx routes onto the earth canvas
+const fundingRoutes = [
+    { from: [-74.0060, 40.7128], to: [139.6503, 35.6762] }, // New York to Tokyo
+    { from: [2.3522, 48.8566], to: [103.8198, 1.3521] },    // Paris to Singapore
+    { from: [-0.1278, 51.5074], to: [-43.1729, -22.9068] }   // London to Rio
 ];
 
-const map = new mapboxgl.Map({
-    container: 'map',
-    style: 'mapbox://styles/mapbox/dark-v11', 
-    center:, // Fixed Earth view coordinates
-    zoom: 1.5,
-    pitch: 45 
-});
-
-map.on('load', () => {
-    renderFlowLines(sampleCapexData);
-});
-
-function renderFlowLines(projects) {
-    projects.forEach((project, index) => {
-        const routeId = `route-${index}`;
-        
-        const midpoint = [
-            (project.source[0] + project.target[0]) / 2,
-            (project.source[1] + project.target[1]) / 2 + (Math.abs(project.source[0] - project.target[0]) * 0.15)
-        ];
-
-        const geojson = {
-            'type': 'Feature',
-            'properties': {},
-            'geometry': {
-                'type': 'LineString',
-                'coordinates': [project.source, midpoint, project.target]
-            }
-        };
-
-        map.addSource(routeId, { 'type': 'geojson', 'data': geojson });
-        map.addLayer({
-            'id': routeId,
-            'type': 'line',
-            'source': routeId,
-            'layout': { 'line-join': 'round', 'line-cap': 'round' },
-            'paint': {
-                'line-color': '#00ffcc', 
-                'line-width': Math.max(2, Math.min(project.weight * 0.8, 12)), 
-                'line-opacity': 0.75
-            }
-        });
+fundingRoutes.forEach(route => {
+    viewer.entities.add({
+        polyline: {
+            positions: Cesium.Cartesian3.fromDegreesArray([route.from[0], route.from[1], route.to[0], route.to[1]]),
+            width: 4,
+            material: new Cesium.PolylineGlowMaterialProperty({
+                glowPower: 0.2,
+                color: Cesium.Color.fromCssString('#00ffcc') // Glowing cyan pathways
+            })
+        }
     });
-}
+});
 </script>
 </body>
 </html>
+
