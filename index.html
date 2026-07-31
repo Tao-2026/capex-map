@@ -1,96 +1,688 @@
+
+```html
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="utf-8">
-<title>Interactive Global Flow Map</title>
-<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
-<!-- Load the Free Cesium Globe Engine -->
-<script src="https://cesium.com"></script>
-<link href="https://cesium.com" rel="stylesheet">
+<meta charset="UTF-8">
+<title>Capital Flow Atlas — Global Capex Tracker</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson-client/3.1.0/topojson-client.min.js"></script>
 <style>
-body { margin: 0; padding: 0; background-color: #0b0f19; overflow: hidden; font-family: sans-serif; }
-#cesiumContainer { position: absolute; top: 0; bottom: 0; width: 100%; height: 100%; }
-#toggleContainer {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    z-index: 1000;
-    background: rgba(11, 15, 25, 0.85);
-    padding: 10px 15px;
-    border-radius: 8px;
-    border: 1px solid #00ffcc;
-}
-.map-btn {
-    background: #0b0f19;
-    color: #00ffcc;
-    border: 1px solid #00ffcc;
-    padding: 8px 12px;
-    cursor: pointer;
-    font-weight: bold;
-    border-radius: 4px;
-    transition: 0.3s;
-}
-.map-btn:hover {
-    background: #00ffcc;
-    color: #0b0f19;
-}
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+  :root{
+    --ink: #0A1220;
+    --ink-2: #101B2E;
+    --ink-3: #1B2A44;
+    --ink-4: #263a5c;
+    --gold: #C9A227;
+    --gold-bright: #F0C555;
+    --paper: #EDEAE0;
+    --steel: #7C8CA6;
+    --steel-dim: #4C5C78;
+    --line: rgba(124,140,166,0.18);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;height:100%;background:var(--ink);color:var(--paper);font-family:'Inter',sans-serif;overflow:hidden;}
+  #app{position:relative;width:100%;height:100vh;min-height:520px;}
+
+  /* ---------- top bar ---------- */
+  #topbar{
+    position:absolute; top:0; left:0; right:0; z-index:20;
+    display:flex; align-items:center; gap:18px;
+    padding:14px 20px; background:linear-gradient(180deg, rgba(10,18,32,0.96) 0%, rgba(10,18,32,0.75) 70%, rgba(10,18,32,0) 100%);
+    pointer-events:none;
+  }
+  #topbar > *{pointer-events:auto;}
+  .brand{display:flex; flex-direction:column; line-height:1;}
+  .brand .mark{font-family:'Fraunces',serif; font-size:19px; font-weight:600; letter-spacing:0.01em; color:var(--paper);}
+  .brand .sub{font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.12em; color:var(--gold); text-transform:uppercase; margin-top:3px;}
+  .divider{width:1px; height:30px; background:var(--line);}
+  .control{display:flex; flex-direction:column; gap:4px;}
+  .control label{font-family:'IBM Plex Mono',monospace; font-size:9px; letter-spacing:0.1em; text-transform:uppercase; color:var(--steel);}
+  select, .btn{
+    background:var(--ink-2); border:1px solid var(--line); color:var(--paper);
+    font-family:'Inter',sans-serif; font-size:12.5px; padding:6px 10px; border-radius:3px; cursor:pointer;
+  }
+  select:hover, .btn:hover{border-color:var(--gold); color:var(--gold-bright);}
+  .btn{font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.04em; display:flex; align-items:center; gap:6px;}
+  .toggle-row{display:flex; gap:8px;}
+  .toggle{
+    font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.05em; text-transform:uppercase;
+    padding:6px 10px; border-radius:3px; border:1px solid var(--line); background:var(--ink-2); color:var(--steel); cursor:pointer;
+    user-select:none;
+  }
+  .toggle.active{border-color:var(--gold); color:var(--gold-bright); background:rgba(201,162,39,0.1);}
+  #spacer{flex:1;}
+
+  /* ---------- map ---------- */
+  svg#map{width:100%; height:100%; display:block; cursor:grab;}
+  svg#map:active{cursor:grabbing;}
+  .country{fill:var(--ink-3); stroke:rgba(6,11,21,0.55); stroke-width:0.4; transition:fill 0.4s ease;}
+  .country.hot{stroke:rgba(6,11,21,0.75);}
+  .country:hover{stroke:var(--gold); stroke-width:1;}
+  .sphere{fill:url(#oceanGradient);}
+  .atmosphere{fill:none; stroke:url(#atmosphereGradient); stroke-width:14; opacity:0.55; pointer-events:none;}
+  .graticule{fill:none; stroke:rgba(124,140,166,0.14); stroke-width:0.5; pointer-events:none;}
+  .star{fill:var(--paper); pointer-events:none;}
+
+  .arc{fill:none; stroke:var(--gold); stroke-opacity:0.38; stroke-width:1.1; pointer-events:none;}
+  .arc-flow{fill:none; stroke:var(--gold-bright); stroke-width:1.4; pointer-events:none; filter:drop-shadow(0 0 2px rgba(240,197,85,0.7));}
+
+  .node-recipient{fill:var(--gold); stroke:#0A1220; stroke-width:1; cursor:pointer;}
+  .node-recipient:hover{fill:var(--gold-bright);}
+  .node-pulse{fill:none; stroke:var(--gold); stroke-width:1.2; opacity:0; pointer-events:none;}
+  .node-funder{fill:var(--steel); stroke:#0A1220; stroke-width:0.8; opacity:0.85;}
+
+  /* ---------- tooltip ---------- */
+  #tooltip{
+    position:absolute; z-index:30; pointer-events:none; opacity:0; transition:opacity 0.12s ease;
+    background:var(--ink-2); border:1px solid var(--line); border-left:2px solid var(--gold);
+    padding:9px 12px; border-radius:2px; max-width:230px; box-shadow:0 8px 24px rgba(0,0,0,0.4);
+  }
+  #tooltip .t-name{font-family:'Fraunces',serif; font-size:13.5px; color:var(--paper); margin-bottom:3px;}
+  #tooltip .t-meta{font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--gold-bright);}
+  #tooltip .t-sub{font-family:'Inter',sans-serif; font-size:10.5px; color:var(--steel); margin-top:2px;}
+
+  /* ---------- legend / stats ---------- */
+  #legend{
+    position:absolute; left:20px; bottom:20px; z-index:15;
+    background:rgba(16,27,46,0.85); border:1px solid var(--line); border-radius:4px; padding:12px 14px;
+    font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--steel); backdrop-filter:blur(4px);
+  }
+  #legend .lg-title{color:var(--steel); letter-spacing:0.08em; text-transform:uppercase; font-size:9px; margin-bottom:8px;}
+  .lg-scale{width:140px; height:8px; border-radius:2px; background:linear-gradient(90deg,#1B2A44,#7A5F1F,#F0C555); margin-bottom:4px;}
+  .lg-labels{display:flex; justify-content:space-between; font-size:9px;}
+  .lg-arc-row{display:flex; align-items:center; gap:6px; margin-top:10px;}
+  .lg-arc-swatch{width:22px; height:2px; background:var(--gold-bright); box-shadow:0 0 3px rgba(240,197,85,0.8);}
+
+  #stats{
+    position:absolute; right:20px; bottom:20px; z-index:15; text-align:right;
+    background:rgba(16,27,46,0.85); border:1px solid var(--line); border-radius:4px; padding:12px 16px;
+    backdrop-filter:blur(4px);
+  }
+  #stats .s-num{font-family:'Fraunces',serif; font-size:22px; color:var(--gold-bright); line-height:1;}
+  #stats .s-label{font-family:'IBM Plex Mono',monospace; font-size:9px; letter-spacing:0.08em; text-transform:uppercase; color:var(--steel); margin-top:2px;}
+  #stats .s-sub{font-family:'Inter',sans-serif; font-size:10.5px; color:var(--steel); margin-top:6px;}
+
+  /* ---------- drawer ---------- */
+  #drawer{
+    position:absolute; top:0; right:0; height:100%; width:340px; max-width:88vw; z-index:40;
+    background:var(--ink-2); border-left:1px solid var(--line);
+    transform:translateX(100%); transition:transform 0.32s cubic-bezier(.2,.8,.2,1);
+    padding:22px 22px 20px 22px; overflow-y:auto;
+  }
+  #drawer.open{transform:translateX(0);}
+  #drawer .d-close{position:absolute; top:16px; right:18px; background:none; border:none; color:var(--steel); font-size:18px; cursor:pointer; font-family:monospace;}
+  #drawer .d-close:hover{color:var(--gold-bright);}
+  #drawer .d-eyebrow{font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:0.12em; text-transform:uppercase; color:var(--gold);}
+  #drawer .d-title{font-family:'Fraunces',serif; font-size:24px; margin:8px 0 2px 0; line-height:1.15;}
+  #drawer .d-loc{font-family:'Inter',sans-serif; font-size:12.5px; color:var(--steel); margin-bottom:16px;}
+  #drawer .d-capex{font-family:'Fraunces',serif; font-size:34px; color:var(--gold-bright); line-height:1;}
+  #drawer .d-capex-label{font-family:'IBM Plex Mono',monospace; font-size:9.5px; color:var(--steel); text-transform:uppercase; letter-spacing:0.08em; margin:4px 0 18px 0;}
+  #drawer .d-section-title{font-family:'IBM Plex Mono',monospace; font-size:9.5px; text-transform:uppercase; letter-spacing:0.1em; color:var(--steel); border-top:1px solid var(--line); padding-top:12px; margin-top:14px; margin-bottom:8px;}
+  .funder-row{display:flex; justify-content:space-between; align-items:baseline; padding:6px 0; border-bottom:1px dashed rgba(124,140,166,0.15); font-size:13px;}
+  .funder-row .f-name{color:var(--paper);}
+  .funder-row .f-amt{font-family:'IBM Plex Mono',monospace; color:var(--gold-bright); font-size:12px;}
+  #drawer .d-note{font-family:'Inter',sans-serif; font-size:12.5px; color:var(--steel); line-height:1.5; margin-top:4px;}
+  #drawer .d-status{display:inline-block; margin-top:14px; font-family:'IBM Plex Mono',monospace; font-size:10px; padding:4px 9px; border:1px solid var(--gold); color:var(--gold-bright); border-radius:20px;}
+
+  /* ---------- schema panel ---------- */
+  #schemaPanel{
+    position:absolute; inset:6% 8%; z-index:50; background:var(--ink-2); border:1px solid var(--gold);
+    border-radius:6px; padding:26px 30px; overflow-y:auto; display:none; box-shadow:0 20px 60px rgba(0,0,0,0.6);
+  }
+  #schemaPanel.open{display:block;}
+  #schemaPanel h2{font-family:'Fraunces',serif; color:var(--paper); margin-top:0;}
+  #schemaPanel p{font-family:'Inter',sans-serif; font-size:13px; color:var(--steel); line-height:1.6;}
+  #schemaPanel pre{
+    background:var(--ink); border:1px solid var(--line); border-radius:4px; padding:16px;
+    font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--gold-bright); overflow-x:auto; line-height:1.6;
+  }
+  #schemaPanel .d-close{position:absolute; top:18px; right:22px; background:none;border:none;color:var(--steel);font-size:20px;cursor:pointer;}
+  #overlay{position:absolute; inset:0; background:rgba(0,0,0,0.5); z-index:45; display:none;}
+  #overlay.open{display:block;}
+
+  ::-webkit-scrollbar{width:8px;}
+  ::-webkit-scrollbar-thumb{background:var(--ink-4); border-radius:4px;}
+
+  @media (max-width:640px){
+    #topbar{flex-wrap:wrap; gap:10px; padding:10px 12px;}
+    #legend{display:none;}
+    #stats{left:12px; right:12px; text-align:left; bottom:12px;}
+    #drawer{width:100%; max-width:100%;}
+  }
 </style>
 </head>
 <body>
+<div id="app">
+  <div id="topbar">
+    <div class="brand">
+      <div class="mark">Capital Flow Atlas</div>
+      <div class="sub">Global Capex &amp; Financing Tracker</div>
+    </div>
+    <div class="divider"></div>
+    <div class="control">
+      <label>Sector</label>
+      <select id="sectorFilter"><option value="all">All sectors</option></select>
+    </div>
+    <div class="control">
+      <label>Layers</label>
+      <div class="toggle-row">
+        <div class="toggle active" id="toggleHeat">Heatmap</div>
+        <div class="toggle active" id="toggleFlow">Flow arcs</div>
+        <div class="toggle active" id="toggleSpin">Auto-rotate</div>
+      </div>
+    </div>
+    <div id="spacer"></div>
+    <button class="btn" id="loadBtn">↥ Load data</button>
+    <button class="btn" id="schemaBtn">{ } Schema</button>
+    <input type="file" id="fileInput" accept="application/json" style="display:none">
+  </div>
 
-<div id="toggleContainer">
-    <button class="map-btn" onclick="toggleMapMode()">🗺️ Toggle Globe / Flat Map</button>
+  <svg id="map"></svg>
+  <div id="tooltip"></div>
+
+  <div id="legend">
+    <div class="lg-title">Capex intensity by recipient country</div>
+    <div class="lg-scale"></div>
+    <div class="lg-labels"><span>No tracked data</span><span>Highest</span></div>
+    <div class="lg-arc-row"><div class="lg-arc-swatch"></div><span>Capital / contractor flow</span></div>
+    <div class="lg-arc-row" style="margin-top:6px;"><span style="color:var(--steel-dim);">Drag to rotate · scroll to zoom</span></div>
+  </div>
+
+  <div id="stats">
+    <div class="s-num" id="statTotal">$0B</div>
+    <div class="s-label">Tracked capex</div>
+    <div class="s-sub" id="statSub">0 projects · 0 countries</div>
+  </div>
+
+  <div id="drawer">
+    <button class="d-close" id="drawerClose">✕</button>
+    <div id="drawerContent"></div>
+  </div>
+
+  <div id="overlay"></div>
+  <div id="schemaPanel">
+    <button class="d-close" id="schemaClose">✕</button>
+    <h2>Data schema</h2>
+    <p>The map renders any array of project records shaped like this. Use "Load data" to drop in a JSON file scraped from your own capex sources (MEED, GlobalData, BlackRidge, company filings, EPC announcements, etc.) — the map re-renders instantly, no code changes needed.</p>
+    <pre id="schemaCode"></pre>
+    <p>Coordinates are decimal [longitude, latitude]. <code>funders</code> is optional — omit it (or leave empty) for domestically-funded projects; those still show up in the heatmap but won't draw a flow arc. <code>amount_usd_b</code> is in billions of US dollars.</p>
+  </div>
 </div>
-<div id="cesiumContainer"></div>
 
 <script>
-// Initialize the free interactive globe container
-const viewer = new Cesium.Viewer('cesiumContainer', {
-    sceneMode: Cesium.SceneMode.SCENE3D, // Start in 3D Globe mode
-    timeline: false,
-    animation: false,
-    homeButton: false,
-    geocoder: false,
-    navigationHelpButton: false,
-    sceneModePicker: false, // Hidden because we built our own custom button
-    baseLayerPicker: false
-});
-
-// Enable smooth mouse dragging and zooming mechanics
-viewer.scene.screenSpaceCameraController.enableRotate = true;
-viewer.scene.screenSpaceCameraController.enableTranslate = true;
-viewer.scene.screenSpaceCameraController.enableZoom = true;
-
-// Toggle between 3D Globe and 2D Flat Map seamlessly
-function toggleMapMode() {
-    const scene = viewer.scene;
-    if (scene.sceneMode === Cesium.SceneMode.SCENE3D) {
-        scene.morphTo2D(1.0); // Smoothly transition to Flat Map over 1 second
-    } else {
-        scene.morphTo3D(1.0); // Smoothly transition back to 3D Globe over 1 second
-    }
-}
-
-// Add simulated flowing CapEx routes onto the earth canvas
-const fundingRoutes = [
-    { from: [-74.0060, 40.7128], to: [139.6503, 35.6762] }, // New York to Tokyo
-    { from: [2.3522, 48.8566], to: [103.8198, 1.3521] },    // Paris to Singapore
-    { from: [-0.1278, 51.5074], to: [-43.1729, -22.9068] }   // London to Rio
+// =====================================================================
+// SAMPLE DATASET — hand-curated real projects, sourced July 2026.
+// Replace via "Load data" with your own scraped feed matching this shape.
+// =====================================================================
+const SAMPLE_DATA = [
+  {
+    id: "fadhili",
+    name: "Fadhili Gas Plant Expansion",
+    sector: "Oil & Gas",
+    recipient: { country: "Saudi Arabia", coords: [49.45, 27.05] },
+    amount_usd_b: 7.7,
+    year: 2024,
+    status: "Under construction · target 2027",
+    funders: [
+      { country: "South Korea", coords: [126.98, 37.57], amount_usd_b: 6.0, entity: "Samsung E&A / GS E&C (EPC)" },
+      { country: "Saudi Arabia", coords: [46.68, 24.71], amount_usd_b: 1.7, entity: "Nesma & Partners (EPC)" }
+    ],
+    note: "Saudi Aramco awarded EPC contracts to expand Fadhili's gas processing capacity from 2.5 to 4 billion cf/d, part of a plan to raise gas output ~60% by 2030."
+  },
+  {
+    id: "tsmc-arizona",
+    name: "TSMC Arizona Fab Cluster",
+    sector: "Semiconductors",
+    recipient: { country: "United States", coords: [-112.07, 33.45] },
+    amount_usd_b: 265,
+    year: 2020,
+    status: "Fab 1 operating · expansion ongoing",
+    funders: [
+      { country: "Taiwan", coords: [121.56, 25.03], amount_usd_b: 258.4, entity: "TSMC (parent investment)" },
+      { country: "United States", coords: [-77.04, 38.9], amount_usd_b: 6.6, entity: "U.S. CHIPS Act direct funding" }
+    ],
+    note: "Largest foreign direct investment in U.S. history. Grew from a $12B single fab (2020) to a $265B multi-fab, packaging and R&D campus after a 2026 expansion announcement."
+  },
+  {
+    id: "simandou",
+    name: "Simandou Iron Ore, Rail & Port",
+    sector: "Mining",
+    recipient: { country: "Guinea", coords: [-8.7, 8.3] },
+    amount_usd_b: 23,
+    year: 2015,
+    status: "Operations began Dec 2025",
+    funders: [
+      { country: "Australia", coords: [149.13, -35.28], amount_usd_b: 11.5, entity: "Rio Tinto (Simfer JV)" },
+      { country: "China", coords: [116.40, 39.90], amount_usd_b: 10.0, entity: "Chinalco / Baowu / WCS consortium" }
+    ],
+    note: "Africa's largest greenfield integrated mine-and-infrastructure project: a shared trans-Guinean railway and port unlocking the world's largest untapped high-grade iron ore deposit."
+  },
+  {
+    id: "hinkley-point-c",
+    name: "Hinkley Point C Nuclear Plant",
+    sector: "Nuclear Energy",
+    recipient: { country: "United Kingdom", coords: [-3.13, 51.21] },
+    amount_usd_b: 61,
+    year: 2017,
+    status: "Under construction · Unit 1 due 2030",
+    funders: [
+      { country: "France", coords: [2.35, 48.85], amount_usd_b: 47, entity: "EDF (majority owner)" },
+      { country: "China", coords: [116.40, 39.90], amount_usd_b: 14, entity: "China General Nuclear Power (CGN)" }
+    ],
+    note: "Costs have climbed from an original £18bn estimate to roughly £48-50bn, with CGN's equity share diluting as EDF has funded most of the overrun alone since 2023."
+  },
+  {
+    id: "jakarta-bandung-hsr",
+    name: "Jakarta–Bandung High-Speed Rail (Whoosh)",
+    sector: "Rail Infrastructure",
+    recipient: { country: "Indonesia", coords: [107.6, -6.5] },
+    amount_usd_b: 7.3,
+    year: 2016,
+    status: "Operating since Oct 2023 · debt restructuring underway",
+    funders: [
+      { country: "China", coords: [116.40, 39.90], amount_usd_b: 5.5, entity: "China Development Bank (concessional loan)" }
+    ],
+    note: "Southeast Asia's first high-speed line, built as a flagship Belt & Road project. Cost overruns pushed the total from an initial $5.5B to $7.3B, straining the Indonesia-China joint venture KCIC."
+  },
+  {
+    id: "neom",
+    name: "NEOM (Oxagon &amp; The Line, rescoped)",
+    sector: "Urban Development",
+    recipient: { country: "Saudi Arabia", coords: [35.3, 27.9] },
+    amount_usd_b: 10.7,
+    year: 2026,
+    status: "Rescoped 2026 · The Line suspended",
+    funders: [],
+    note: "Originally envisioned near $500B, NEOM's 2026-2030 plan now allots about $10.7B to new construction (mostly Oxagon) alongside an estimated $16B just to unwind cancelled contracts — entirely PIF-financed, domestic capital."
+  }
 ];
 
-fundingRoutes.forEach(route => {
-    viewer.entities.add({
-        polyline: {
-            positions: Cesium.Cartesian3.fromDegreesArray([route.from[0], route.from[1], route.to[0], route.to[1]]),
-            width: 4,
-            material: new Cesium.PolylineGlowMaterialProperty({
-                glowPower: 0.2,
-                color: Cesium.Color.fromCssString('#00ffcc') // Glowing cyan pathways
-            })
-        }
+const SCHEMA_EXAMPLE = {
+  id: "unique-slug",
+  name: "Project name",
+  sector: "Oil & Gas | Semiconductors | Mining | ... (your own categories)",
+  recipient: { country: "Country name", coords: ["longitude", "latitude"] },
+  amount_usd_b: "total capex, in billions of USD (number)",
+  year: "year announced or FID (number)",
+  status: "short status string",
+  funders: [
+    { country: "Funder country", coords: ["longitude", "latitude"], amount_usd_b: "number", entity: "Company / bank name" }
+  ],
+  note: "1-2 sentence description shown in the detail drawer"
+};
+document.getElementById('schemaCode').textContent = JSON.stringify([SCHEMA_EXAMPLE], null, 2);
+
+// =====================================================================
+// STATE
+// =====================================================================
+let DATA = SAMPLE_DATA;
+let showHeat = true, showFlow = true, showSpin = true, sectorSel = "all";
+let worldFeatures = null;
+
+const svg = d3.select("#map");
+
+// --- defs: ocean + atmosphere gradients ---
+const defs = svg.append("defs");
+const oceanGrad = defs.append("radialGradient").attr("id","oceanGradient").attr("cx","35%").attr("cy","32%");
+oceanGrad.append("stop").attr("offset","0%").attr("stop-color","#16233F");
+oceanGrad.append("stop").attr("offset","65%").attr("stop-color","#0B1424");
+oceanGrad.append("stop").attr("offset","100%").attr("stop-color","#050A13");
+const atmoGrad = defs.append("radialGradient").attr("id","atmosphereGradient");
+atmoGrad.append("stop").attr("offset","75%").attr("stop-color","#3E6FBF").attr("stop-opacity",0);
+atmoGrad.append("stop").attr("offset","92%").attr("stop-color","#C9A227").attr("stop-opacity",0.5);
+atmoGrad.append("stop").attr("offset","100%").attr("stop-color","#C9A227").attr("stop-opacity",0);
+
+const gStars = svg.append("g").attr("class","stars");
+const gLayer = svg.append("g").attr("id", "gLayer");
+const atmosphere = gLayer.append("circle").attr("class","atmosphere");
+const gCountries = gLayer.append("g").attr("class", "countries");
+const gArcs = gLayer.append("g").attr("class", "arcs");
+const gNodes = gLayer.append("g").attr("class", "nodes");
+
+let width = window.innerWidth, height = window.innerHeight;
+let baseScale = 1, currentK = 1;
+
+const projection = d3.geoOrthographic().rotate([0, -18, 0]).clipAngle(90).precision(0.3);
+const path = d3.geoPath(projection);
+
+function fitProjection(){
+  width = window.innerWidth; height = window.innerHeight;
+  svg.attr("viewBox", [0,0,width,height]);
+  baseScale = Math.min(width, height)/2 - 26;
+  projection.scale(baseScale*currentK).translate([width/2, height/2]);
+  atmosphere.attr("cx", width/2).attr("cy", height/2).attr("r", baseScale*currentK + 6);
+}
+fitProjection();
+seedStars();
+
+function seedStars(){
+  const stars = d3.range(90).map(() => ({
+    x: Math.random()*1000, y: Math.random()*1000, r: Math.random()*1.1 + 0.2, o: Math.random()*0.5 + 0.15
+  }));
+  gStars.selectAll("circle").data(stars).join("circle")
+    .attr("class","star")
+    .attr("cx", d => d.x*width/1000).attr("cy", d => d.y*height/1000)
+    .attr("r", d => d.r).attr("opacity", d => d.o);
+}
+
+// --- rotation via drag ---
+function clampLat(l){ return Math.max(-90, Math.min(90, l)); }
+let dragging = false, resumeTimer = null;
+const dragBehavior = d3.drag()
+  .on("start", (event) => { dragging = true; clearTimeout(resumeTimer); })
+  .on("drag", (event) => {
+    const r = projection.rotate();
+    const sens = 0.28 / currentK;
+    projection.rotate([r[0] + event.dx*sens, clampLat(r[1] - event.dy*sens), r[2]]);
+    reprojectAll();
+  })
+  .on("end", () => {
+    dragging = false;
+    resumeTimer = setTimeout(() => {}, 600);
+  });
+svg.call(dragBehavior);
+
+// --- zoom via wheel only (drag is reserved for rotation) ---
+const zoomBehavior = d3.zoom()
+  .filter((event) => event.type === "wheel")
+  .scaleExtent([0.6, 6])
+  .on("zoom", (event) => {
+    currentK = event.transform.k;
+    projection.scale(baseScale*currentK);
+    atmosphere.attr("r", baseScale*currentK + 6);
+    reprojectAll();
+  });
+svg.call(zoomBehavior);
+
+// --- gentle auto-spin ---
+const spinTimer = d3.timer((elapsed) => {
+  if (!showSpin || dragging) return;
+  const r = projection.rotate();
+  projection.rotate([r[0] + 0.045, r[1], r[2]]);
+  reprojectAll();
+});
+
+// resize handling
+window.addEventListener("resize", () => { fitProjection(); seedStars(); reprojectAll(); });
+
+function isFront(coords){
+  const r = projection.rotate();
+  return d3.geoDistance(coords, [-r[0], -r[1]]) < Math.PI/2;
+}
+
+function reprojectAll(){
+  if (worldFeatures) gCountries.selectAll("path.country").attr("d", path);
+  gCountries.selectAll("path.graticule").attr("d", path);
+  sphere.attr("d", path({type:"Sphere"}));
+  gArcs.selectAll("path.arc").attr("d", d => path(d.line));
+  gArcs.selectAll("path.arc-flow").attr("d", d => path(d.line));
+  gNodes.selectAll("circle.node-recipient")
+    .attr("cx", d => projection(d.recipient.coords)[0])
+    .attr("cy", d => projection(d.recipient.coords)[1])
+    .style("display", d => isFront(d.recipient.coords) ? null : "none");
+  gNodes.selectAll("circle.node-pulse")
+    .attr("cx", d => projection(d.recipient.coords)[0])
+    .attr("cy", d => projection(d.recipient.coords)[1])
+    .style("display", d => isFront(d.recipient.coords) ? null : "none");
+  gNodes.selectAll("circle.node-funder")
+    .attr("cx", d => projection(d.coords)[0])
+    .attr("cy", d => projection(d.coords)[1])
+    .style("display", d => isFront(d.coords) ? null : "none");
+}
+
+// =====================================================================
+// LOAD WORLD GEOMETRY (with graceful fallback)
+// =====================================================================
+const grat = d3.geoGraticule10();
+gCountries.append("path").datum(grat).attr("class","graticule").attr("d", path);
+const sphere = gCountries.insert("path", ":first-child").attr("class","sphere").attr("d", path({type:"Sphere"}));
+
+fetch("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json")
+  .then(r => r.json())
+  .then(topo => {
+    worldFeatures = topojson.feature(topo, topo.objects.countries).features;
+    drawCountries();
+    render();
+  })
+  .catch(() => { render(); });
+
+const NAME_ALIASES = {
+  "United States": ["United States of America", "United States"],
+  "United Kingdom": ["United Kingdom", "United Kingdom of Great Britain and Northern Ireland"],
+  "South Korea": ["South Korea", "Korea, Rep.", "Republic of Korea"],
+  "Russia": ["Russian Federation", "Russia"]
+};
+function countryMatches(dataCountry, featureName){
+  if (dataCountry === featureName) return true;
+  const aliases = NAME_ALIASES[dataCountry];
+  return aliases ? aliases.includes(featureName) : false;
+}
+function countryCapex(featureName){
+  return d3.sum(DATA.filter(p => matchesSector(p) && countryMatches(p.recipient.country, featureName)), p => p.amount_usd_b);
+}
+
+function drawCountries(){
+  gCountries.selectAll("path.country")
+    .data(worldFeatures)
+    .join("path")
+    .attr("class","country")
+    .attr("d", path)
+    .on("mousemove", (event, d) => {
+      const cap = countryCapex(d.properties.name);
+      if (cap > 0) showTooltip(event, `<div class="t-name">${d.properties.name}</div><div class="t-meta">$${cap.toFixed(1)}B tracked capex</div>`);
+    })
+    .on("mouseleave", hideTooltip);
+}
+
+// =====================================================================
+// RENDER
+// =====================================================================
+function matchesSector(p){ return sectorSel === "all" || p.sector === sectorSel; }
+
+function populateSectorFilter(){
+  const sectors = Array.from(new Set(DATA.map(p => p.sector))).sort();
+  const sel = d3.select("#sectorFilter");
+  sel.selectAll("option.dyn").remove();
+  sel.selectAll("option.dyn").data(sectors).join("option")
+    .attr("class","dyn").attr("value", d=>d).text(d=>d);
+}
+
+function heatColor(name){
+  const cap = countryCapex(name);
+  if (!showHeat || cap <= 0) return null;
+  const max = d3.max(DATA.filter(matchesSector), p => p.amount_usd_b) || 1;
+  const scale = d3.scaleSqrt().domain([0, max]).range([0, 1]).clamp(true);
+  return d3.interpolateRgbBasis(["#1B2A44", "#7A5F1F", "#F0C555"])(scale(cap));
+}
+
+function render(){
+  populateSectorFilter();
+  const active = DATA.filter(matchesSector);
+
+  // countries
+  if (worldFeatures){
+    gCountries.selectAll("path.country")
+      .classed("hot", d => countryCapex(d.properties.name) > 0)
+      .transition().duration(300)
+      .attr("fill", d => heatColor(d.properties.name) || "#1B2A44");
+  }
+
+  // arcs
+  const arcData = [];
+  active.forEach(p => (p.funders||[]).forEach(f => {
+    if (f.country === p.recipient.country) return;
+    arcData.push({ project: p, from: f, to: p.recipient, amount: f.amount_usd_b,
+                   line: { type:"LineString", coordinates: [f.coords, p.recipient.coords] } });
+  }));
+
+  const arcSel = gArcs.selectAll("path.arc").data(showFlow ? arcData : [], d => d.project.id + d.from.entity);
+  arcSel.exit().remove();
+  arcSel.enter().append("path").attr("class","arc")
+    .merge(arcSel)
+    .attr("d", d => path(d.line))
+    .attr("stroke-width", d => 0.8 + Math.sqrt(d.amount)*0.35);
+
+  const flowSel = gArcs.selectAll("path.arc-flow").data(showFlow ? arcData : [], d => d.project.id + d.from.entity);
+  flowSel.exit().remove();
+  const flowEnter = flowSel.enter().append("path").attr("class","arc-flow");
+  flowEnter.merge(flowSel)
+    .attr("d", d => path(d.line))
+    .each(function(){ animateFlow(this); });
+
+  // funder nodes
+  const funderPts = [];
+  active.forEach(p => (p.funders||[]).forEach(f => {
+    if (f.country === p.recipient.country) return;
+    funderPts.push({ ...f, project: p });
+  }));
+  const fnSel = gNodes.selectAll("circle.node-funder").data(showFlow ? funderPts : [], d => d.project.id + d.entity);
+  fnSel.exit().remove();
+  fnSel.enter().append("circle").attr("class","node-funder").attr("r", 2.4)
+    .merge(fnSel)
+    .attr("cx", d => projection(d.coords)[0])
+    .attr("cy", d => projection(d.coords)[1])
+    .style("display", d => isFront(d.coords) ? null : "none")
+    .on("mousemove", (event, d) => showTooltip(event, `<div class="t-name">${d.entity}</div><div class="t-sub">${d.country} → ${d.project.recipient.country}</div><div class="t-meta">$${d.amount_usd_b}B</div>`))
+    .on("mouseleave", hideTooltip);
+
+  // recipient nodes
+  const max = d3.max(active, p => p.amount_usd_b) || 1;
+  const rScale = d3.scaleSqrt().domain([0, max]).range([3, 22]);
+
+  const rnSel = gNodes.selectAll("circle.node-recipient").data(active, d => d.id);
+  rnSel.exit().remove();
+  rnSel.enter().append("circle").attr("class","node-recipient")
+    .on("click", (event, d) => openDrawer(d))
+    .on("mousemove", (event, d) => showTooltip(event, `<div class="t-name">${d.name}</div><div class="t-sub">${d.recipient.country} · ${d.sector}</div><div class="t-meta">$${d.amount_usd_b}B</div>`))
+    .on("mouseleave", hideTooltip)
+    .merge(rnSel)
+    .attr("cx", d => projection(d.recipient.coords)[0])
+    .attr("cy", d => projection(d.recipient.coords)[1])
+    .attr("r", d => rScale(d.amount_usd_b))
+    .style("display", d => isFront(d.recipient.coords) ? null : "none");
+
+  const pnSel = gNodes.selectAll("circle.node-pulse").data(active, d => d.id);
+  pnSel.exit().remove();
+  const pnEnter = pnSel.enter().append("circle").attr("class","node-pulse");
+  pnEnter.merge(pnSel)
+    .attr("cx", d => projection(d.recipient.coords)[0])
+    .attr("cy", d => projection(d.recipient.coords)[1])
+    .attr("r", d => rScale(d.amount_usd_b))
+    .style("display", d => isFront(d.recipient.coords) ? null : "none")
+    .each(function(){ animatePulse(this); });
+
+  // stats
+  const total = d3.sum(active, p => p.amount_usd_b);
+  const countries = new Set(active.map(p => p.recipient.country)).size;
+  document.getElementById("statTotal").textContent = "$" + total.toFixed(1) + "B";
+  document.getElementById("statSub").textContent = `${active.length} project${active.length!==1?'s':''} · ${countries} countr${countries!==1?'ies':'y'}`;
+}
+
+function animateFlow(node){
+  const len = node.getTotalLength();
+  node.style.strokeDasharray = `${Math.max(len*0.06,8)} ${len}`;
+  d3.select(node).interrupt()
+    .attr("stroke-dashoffset", len)
+    .transition().duration(2600).ease(d3.easeLinear)
+    .attr("stroke-dashoffset", 0)
+    .on("end", function repeat(){
+      d3.select(this).attr("stroke-dashoffset", len)
+        .transition().duration(2600).ease(d3.easeLinear)
+        .attr("stroke-dashoffset", 0)
+        .on("end", repeat);
     });
+}
+
+function animatePulse(node){
+  const baseR = +d3.select(node).attr("r");
+  d3.select(node).interrupt()
+    .attr("r", baseR).attr("opacity", 0.55)
+    .transition().duration(2200).ease(d3.easeCubicOut)
+    .attr("r", baseR*2.1).attr("opacity", 0)
+    .on("end", function repeat(){
+      d3.select(this).attr("r", baseR).attr("opacity", 0.55)
+        .transition().duration(2200).ease(d3.easeCubicOut)
+        .attr("r", baseR*2.1).attr("opacity", 0)
+        .on("end", repeat);
+    });
+}
+
+// =====================================================================
+// TOOLTIP
+// =====================================================================
+const tooltip = document.getElementById("tooltip");
+function showTooltip(event, html){
+  tooltip.innerHTML = html;
+  tooltip.style.opacity = 1;
+  const pad = 16;
+  let x = event.clientX + pad, y = event.clientY + pad;
+  tooltip.style.left = x + "px";
+  tooltip.style.top = y + "px";
+}
+function hideTooltip(){ tooltip.style.opacity = 0; }
+
+// =====================================================================
+// DRAWER
+// =====================================================================
+function fmtB(n){ return "$" + n.toFixed(1) + "B"; }
+function openDrawer(d){
+  const funders = (d.funders||[]).map(f => `
+    <div class="funder-row">
+      <span class="f-name">${f.entity}<br><span style="color:var(--steel);font-size:11px;">${f.country}</span></span>
+      <span class="f-amt">${fmtB(f.amount_usd_b)}</span>
+    </div>`).join("") || `<div class="d-note">Domestically financed — no cross-border capital tracked.</div>`;
+
+  document.getElementById("drawerContent").innerHTML = `
+    <div class="d-eyebrow">${d.sector} · ${d.year}</div>
+    <div class="d-title">${d.name}</div>
+    <div class="d-loc">${d.recipient.country}</div>
+    <div class="d-capex">${fmtB(d.amount_usd_b)}</div>
+    <div class="d-capex-label">Total tracked capex</div>
+    <div class="d-note">${d.note||""}</div>
+    <div class="d-status">${d.status||""}</div>
+    <div class="d-section-title">Capital / contractor origin</div>
+    ${funders}
+  `;
+  document.getElementById("drawer").classList.add("open");
+}
+document.getElementById("drawerClose").onclick = () => document.getElementById("drawer").classList.remove("open");
+
+// =====================================================================
+// CONTROLS
+// =====================================================================
+document.getElementById("sectorFilter").addEventListener("change", (e) => { sectorSel = e.target.value; render(); });
+document.getElementById("toggleHeat").addEventListener("click", function(){ showHeat = !showHeat; this.classList.toggle("active", showHeat); render(); });
+document.getElementById("toggleFlow").addEventListener("click", function(){ showFlow = !showFlow; this.classList.toggle("active", showFlow); render(); });
+document.getElementById("toggleSpin").addEventListener("click", function(){ showSpin = !showSpin; this.classList.toggle("active", showSpin); });
+
+document.getElementById("schemaBtn").onclick = () => { document.getElementById("schemaPanel").classList.add("open"); document.getElementById("overlay").classList.add("open"); };
+document.getElementById("schemaClose").onclick = closeSchema;
+document.getElementById("overlay").onclick = closeSchema;
+function closeSchema(){ document.getElementById("schemaPanel").classList.remove("open"); document.getElementById("overlay").classList.remove("open"); }
+
+document.getElementById("loadBtn").onclick = () => document.getElementById("fileInput").click();
+document.getElementById("fileInput").addEventListener("change", (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    try {
+      const parsed = JSON.parse(ev.target.result);
+      if (!Array.isArray(parsed) || !parsed.length) throw new Error("Expected a non-empty JSON array of projects.");
+      DATA = parsed;
+      sectorSel = "all";
+      document.getElementById("sectorFilter").value = "all";
+      render();
+    } catch(err){
+      alert("Couldn't load that file: " + err.message + "\n\nCheck the schema (top bar → { } Schema) and try again.");
+    }
+  };
+  reader.readAsText(file);
 });
 </script>
 </body>
 </html>
-
