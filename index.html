@@ -1,13 +1,12 @@
 
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <title>Capital Flow Atlas — Global Capex Tracker</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson-client/3.1.0/topojson-client.min.js"></script>
+<script src="./vendor-d3.min.js"></script>
+<script src="./vendor-topojson-client.min.js"></script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
 
@@ -54,6 +53,23 @@
     user-select:none;
   }
   .toggle.active{border-color:var(--gold); color:var(--gold-bright); background:rgba(201,162,39,0.1);}
+  .toggle.disabled{opacity:0.38; cursor:not-allowed; border-color:var(--line); color:var(--steel); background:var(--ink-2);}
+  .view-switch{
+    position:relative; display:grid; grid-template-columns:1fr 1fr; align-items:center;
+    width:128px; height:30px; padding:2px; border:1px solid rgba(201,162,39,0.45);
+    border-radius:5px; background:rgba(16,27,46,0.92); color:var(--steel);
+    font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:0.04em;
+    text-transform:uppercase; cursor:pointer; overflow:hidden;
+  }
+  .view-switch::before{
+    content:""; position:absolute; z-index:0; left:2px; top:2px; width:calc(50% - 2px); height:24px;
+    border-radius:3px; background:linear-gradient(135deg, rgba(201,162,39,0.28), rgba(201,162,39,0.10));
+    box-shadow:inset 0 0 0 1px var(--gold); transition:transform 0.28s cubic-bezier(.2,.8,.2,1);
+  }
+  .view-switch.map::before{transform:translateX(100%);}
+  .view-switch span{position:relative; z-index:1; text-align:center; transition:color 0.25s ease;}
+  .view-switch:not(.map) .globe-label, .view-switch.map .map-label{color:var(--gold-bright);}
+  .view-switch:hover{border-color:var(--gold);}
   #spacer{flex:1;}
 
   /* ---------- map ---------- */
@@ -66,6 +82,10 @@
   .atmosphere{fill:none; stroke:url(#atmosphereGradient); stroke-width:14; opacity:0.55; pointer-events:none;}
   .graticule{fill:none; stroke:rgba(124,140,166,0.14); stroke-width:0.5; pointer-events:none;}
   .star{fill:var(--paper); pointer-events:none;}
+  svg#map.flat .sphere{fill:url(#flatOceanGradient); stroke:rgba(124,140,166,0.38); stroke-width:1.1;}
+  svg#map.flat .country{fill:#273B58; stroke:#0B1728; stroke-width:0.7;}
+  svg#map.flat .country:hover{stroke:var(--gold-bright); stroke-width:1.2;}
+  svg#map.flat .graticule{stroke:rgba(178,198,225,0.14); stroke-width:0.55;}
 
   .arc{fill:none; stroke:var(--gold); stroke-opacity:0.38; stroke-width:1.1; pointer-events:none;}
   .arc-flow{fill:none; stroke:var(--gold-bright); stroke-width:1.4; pointer-events:none; filter:drop-shadow(0 0 2px rgba(240,197,85,0.7));}
@@ -92,6 +112,7 @@
     font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--steel); backdrop-filter:blur(4px);
   }
   #legend .lg-title{color:var(--steel); letter-spacing:0.08em; text-transform:uppercase; font-size:9px; margin-bottom:8px;}
+  #legend .lg-note{margin-top:9px; padding-top:8px; border-top:1px solid var(--line); color:var(--steel-dim); font-size:8.5px; line-height:1.35; max-width:210px;}
   .lg-scale{width:140px; height:8px; border-radius:2px; background:linear-gradient(90deg,#1B2A44,#7A5F1F,#F0C555); margin-bottom:4px;}
   .lg-labels{display:flex; justify-content:space-between; font-size:9px;}
   .lg-arc-row{display:flex; align-items:center; gap:6px; margin-top:10px;}
@@ -164,6 +185,12 @@
     </div>
     <div class="divider"></div>
     <div class="control">
+      <label>View</label>
+      <button class="view-switch" id="viewSwitch" type="button" aria-label="Switch to flat map" aria-pressed="false">
+        <span class="globe-label">Globe</span><span class="map-label">Map</span>
+      </button>
+    </div>
+    <div class="control">
       <label>Sector</label>
       <select id="sectorFilter"><option value="all">All sectors</option></select>
     </div>
@@ -185,11 +212,12 @@
   <div id="tooltip"></div>
 
   <div id="legend">
-    <div class="lg-title">Capex intensity by recipient country</div>
+    <div class="lg-title">Capex intensity by recipient market / region</div>
     <div class="lg-scale"></div>
     <div class="lg-labels"><span>No tracked data</span><span>Highest</span></div>
     <div class="lg-arc-row"><div class="lg-arc-swatch"></div><span>Capital / contractor flow</span></div>
-    <div class="lg-arc-row" style="margin-top:6px;"><span style="color:var(--steel-dim);">Drag to rotate · scroll to zoom</span></div>
+    <div class="lg-arc-row" style="margin-top:6px;"><span id="mapHint" style="color:var(--steel-dim);">Drag to rotate · scroll to zoom</span></div>
+    <div class="lg-note">Names and boundaries are shown for geographic reference only and do not imply a position on sovereignty.</div>
   </div>
 
   <div id="stats">
@@ -320,7 +348,7 @@ document.getElementById('schemaCode').textContent = JSON.stringify([SCHEMA_EXAMP
 // STATE
 // =====================================================================
 let DATA = SAMPLE_DATA;
-let showHeat = true, showFlow = true, showSpin = true, sectorSel = "all";
+let showHeat = true, showFlow = true, showSpin = true, sectorSel = "all", mapMode = "globe";
 let worldFeatures = null;
 
 const svg = d3.select("#map");
@@ -331,6 +359,10 @@ const oceanGrad = defs.append("radialGradient").attr("id","oceanGradient").attr(
 oceanGrad.append("stop").attr("offset","0%").attr("stop-color","#16233F");
 oceanGrad.append("stop").attr("offset","65%").attr("stop-color","#0B1424");
 oceanGrad.append("stop").attr("offset","100%").attr("stop-color","#050A13");
+const flatOceanGrad = defs.append("linearGradient").attr("id","flatOceanGradient").attr("x1","0%").attr("y1","0%").attr("x2","0%").attr("y2","100%");
+flatOceanGrad.append("stop").attr("offset","0%").attr("stop-color","#132D48");
+flatOceanGrad.append("stop").attr("offset","55%").attr("stop-color","#0E2239");
+flatOceanGrad.append("stop").attr("offset","100%").attr("stop-color","#09182A");
 const atmoGrad = defs.append("radialGradient").attr("id","atmosphereGradient");
 atmoGrad.append("stop").attr("offset","75%").attr("stop-color","#3E6FBF").attr("stop-opacity",0);
 atmoGrad.append("stop").attr("offset","92%").attr("stop-color","#C9A227").attr("stop-opacity",0.5);
@@ -346,15 +378,22 @@ const gNodes = gLayer.append("g").attr("class", "nodes");
 let width = window.innerWidth, height = window.innerHeight;
 let baseScale = 1, currentK = 1;
 
-const projection = d3.geoOrthographic().rotate([0, -18, 0]).clipAngle(90).precision(0.3);
+let projection = d3.geoOrthographic().rotate([0, -18, 0]).clipAngle(90).precision(0.3);
 const path = d3.geoPath(projection);
 
 function fitProjection(){
   width = window.innerWidth; height = window.innerHeight;
   svg.attr("viewBox", [0,0,width,height]);
-  baseScale = Math.min(width, height)/2 - 26;
-  projection.scale(baseScale*currentK).translate([width/2, height/2]);
-  atmosphere.attr("cx", width/2).attr("cy", height/2).attr("r", baseScale*currentK + 6);
+  if (mapMode === "globe") {
+    baseScale = Math.min(width, height)/2 - 26;
+    projection.scale(baseScale*currentK).translate([width/2, height/2]);
+    atmosphere.attr("cx", width/2).attr("cy", height/2).attr("r", baseScale*currentK + 6).style("display", null);
+  } else {
+    projection.fitExtent([[34, 92], [width-34, height-54]], {type:"Sphere"});
+    baseScale = projection.scale();
+    projection.scale(baseScale*currentK);
+    atmosphere.style("display", "none");
+  }
 }
 fitProjection();
 seedStars();
@@ -371,13 +410,22 @@ function seedStars(){
 
 // --- rotation via drag ---
 function clampLat(l){ return Math.max(-90, Math.min(90, l)); }
+function wrapLongitude(l){ return ((l + 180) % 360 + 360) % 360 - 180; }
 let dragging = false, resumeTimer = null;
 const dragBehavior = d3.drag()
   .on("start", (event) => { dragging = true; clearTimeout(resumeTimer); })
   .on("drag", (event) => {
-    const r = projection.rotate();
-    const sens = 0.28 / currentK;
-    projection.rotate([r[0] + event.dx*sens, clampLat(r[1] - event.dy*sens), r[2]]);
+    if (mapMode === "globe") {
+      const r = projection.rotate();
+      const sens = 0.28 / currentK;
+      projection.rotate([r[0] + event.dx*sens, clampLat(r[1] - event.dy*sens), r[2]]);
+    } else {
+      // Rotate the central longitude instead of translating the SVG.
+      // D3 then wraps features across the antimeridian without exposing empty space.
+      const r = projection.rotate();
+      const sens = 0.24 / currentK;
+      projection.rotate([wrapLongitude(r[0] + event.dx*sens), 0, 0]);
+    }
     reprojectAll();
   })
   .on("end", () => {
@@ -393,14 +441,14 @@ const zoomBehavior = d3.zoom()
   .on("zoom", (event) => {
     currentK = event.transform.k;
     projection.scale(baseScale*currentK);
-    atmosphere.attr("r", baseScale*currentK + 6);
+    if (mapMode === "globe") atmosphere.attr("r", baseScale*currentK + 6);
     reprojectAll();
   });
 svg.call(zoomBehavior);
 
 // --- gentle auto-spin ---
 const spinTimer = d3.timer((elapsed) => {
-  if (!showSpin || dragging) return;
+  if (mapMode !== "globe" || !showSpin || dragging) return;
   const r = projection.rotate();
   projection.rotate([r[0] + 0.045, r[1], r[2]]);
   reprojectAll();
@@ -410,6 +458,7 @@ const spinTimer = d3.timer((elapsed) => {
 window.addEventListener("resize", () => { fitProjection(); seedStars(); reprojectAll(); });
 
 function isFront(coords){
+  if (mapMode === "map") return true;
   const r = projection.rotate();
   return d3.geoDistance(coords, [-r[0], -r[1]]) < Math.PI/2;
 }
@@ -441,7 +490,7 @@ const grat = d3.geoGraticule10();
 gCountries.append("path").datum(grat).attr("class","graticule").attr("d", path);
 const sphere = gCountries.insert("path", ":first-child").attr("class","sphere").attr("d", path({type:"Sphere"}));
 
-fetch("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json")
+fetch("./world-countries-110m.json")
   .then(r => r.json())
   .then(topo => {
     worldFeatures = topojson.feature(topo, topo.objects.countries).features;
@@ -456,6 +505,9 @@ const NAME_ALIASES = {
   "South Korea": ["South Korea", "Korea, Rep.", "Republic of Korea"],
   "Russia": ["Russian Federation", "Russia"]
 };
+function displayCountryName(name){
+  return name;
+}
 function countryMatches(dataCountry, featureName){
   if (dataCountry === featureName) return true;
   const aliases = NAME_ALIASES[dataCountry];
@@ -470,10 +522,14 @@ function drawCountries(){
     .data(worldFeatures)
     .join("path")
     .attr("class","country")
+    .attr("data-country", d => d.properties.name)
     .attr("d", path)
     .on("mousemove", (event, d) => {
       const cap = countryCapex(d.properties.name);
-      if (cap > 0) showTooltip(event, `<div class="t-name">${d.properties.name}</div><div class="t-meta">$${cap.toFixed(1)}B tracked capex</div>`);
+      const capexLine = cap > 0
+        ? `<div class="t-meta">$${cap.toFixed(1)}B tracked capex</div>`
+        : `<div class="t-sub">No tracked capex</div>`;
+      showTooltip(event, `<div class="t-name">${displayCountryName(d.properties.name)}</div>${capexLine}`);
     })
     .on("mouseleave", hideTooltip);
 }
@@ -508,7 +564,7 @@ function render(){
     gCountries.selectAll("path.country")
       .classed("hot", d => countryCapex(d.properties.name) > 0)
       .transition().duration(300)
-      .attr("fill", d => heatColor(d.properties.name) || "#1B2A44");
+      .attr("fill", d => heatColor(d.properties.name) || (mapMode === "map" ? "#273B58" : "#1B2A44"));
   }
 
   // arcs
@@ -543,10 +599,11 @@ function render(){
   fnSel.exit().remove();
   fnSel.enter().append("circle").attr("class","node-funder").attr("r", 2.4)
     .merge(fnSel)
+    .attr("data-country", d => displayCountryName(d.country))
     .attr("cx", d => projection(d.coords)[0])
     .attr("cy", d => projection(d.coords)[1])
     .style("display", d => isFront(d.coords) ? null : "none")
-    .on("mousemove", (event, d) => showTooltip(event, `<div class="t-name">${d.entity}</div><div class="t-sub">${d.country} → ${d.project.recipient.country}</div><div class="t-meta">$${d.amount_usd_b}B</div>`))
+    .on("mousemove", (event, d) => showTooltip(event, `<div class="t-name">${d.entity}</div><div class="t-sub">${displayCountryName(d.country)} → ${displayCountryName(d.project.recipient.country)}</div><div class="t-meta">$${d.amount_usd_b}B</div>`))
     .on("mouseleave", hideTooltip);
 
   // recipient nodes
@@ -557,7 +614,7 @@ function render(){
   rnSel.exit().remove();
   rnSel.enter().append("circle").attr("class","node-recipient")
     .on("click", (event, d) => openDrawer(d))
-    .on("mousemove", (event, d) => showTooltip(event, `<div class="t-name">${d.name}</div><div class="t-sub">${d.recipient.country} · ${d.sector}</div><div class="t-meta">$${d.amount_usd_b}B</div>`))
+    .on("mousemove", (event, d) => showTooltip(event, `<div class="t-name">${d.name}</div><div class="t-sub">${displayCountryName(d.recipient.country)} · ${d.sector}</div><div class="t-meta">$${d.amount_usd_b}B</div>`))
     .on("mouseleave", hideTooltip)
     .merge(rnSel)
     .attr("cx", d => projection(d.recipient.coords)[0])
@@ -579,7 +636,7 @@ function render(){
   const total = d3.sum(active, p => p.amount_usd_b);
   const countries = new Set(active.map(p => p.recipient.country)).size;
   document.getElementById("statTotal").textContent = "$" + total.toFixed(1) + "B";
-  document.getElementById("statSub").textContent = `${active.length} project${active.length!==1?'s':''} · ${countries} countr${countries!==1?'ies':'y'}`;
+  document.getElementById("statSub").textContent = `${active.length} project${active.length!==1?'s':''} · ${countries} market${countries!==1?'s':''}`;
 }
 
 function animateFlow(node){
@@ -632,14 +689,14 @@ function fmtB(n){ return "$" + n.toFixed(1) + "B"; }
 function openDrawer(d){
   const funders = (d.funders||[]).map(f => `
     <div class="funder-row">
-      <span class="f-name">${f.entity}<br><span style="color:var(--steel);font-size:11px;">${f.country}</span></span>
+      <span class="f-name">${f.entity}<br><span style="color:var(--steel);font-size:11px;">${displayCountryName(f.country)}</span></span>
       <span class="f-amt">${fmtB(f.amount_usd_b)}</span>
     </div>`).join("") || `<div class="d-note">Domestically financed — no cross-border capital tracked.</div>`;
 
   document.getElementById("drawerContent").innerHTML = `
     <div class="d-eyebrow">${d.sector} · ${d.year}</div>
     <div class="d-title">${d.name}</div>
-    <div class="d-loc">${d.recipient.country}</div>
+    <div class="d-loc">${displayCountryName(d.recipient.country)}</div>
     <div class="d-capex">${fmtB(d.amount_usd_b)}</div>
     <div class="d-capex-label">Total tracked capex</div>
     <div class="d-note">${d.note||""}</div>
@@ -657,7 +714,32 @@ document.getElementById("drawerClose").onclick = () => document.getElementById("
 document.getElementById("sectorFilter").addEventListener("change", (e) => { sectorSel = e.target.value; render(); });
 document.getElementById("toggleHeat").addEventListener("click", function(){ showHeat = !showHeat; this.classList.toggle("active", showHeat); render(); });
 document.getElementById("toggleFlow").addEventListener("click", function(){ showFlow = !showFlow; this.classList.toggle("active", showFlow); render(); });
-document.getElementById("toggleSpin").addEventListener("click", function(){ showSpin = !showSpin; this.classList.toggle("active", showSpin); });
+document.getElementById("toggleSpin").addEventListener("click", function(){
+  if (mapMode === "map") return;
+  showSpin = !showSpin;
+  this.classList.toggle("active", showSpin);
+});
+document.getElementById("viewSwitch").addEventListener("click", function(){
+  mapMode = mapMode === "globe" ? "map" : "globe";
+  currentK = 1;
+  if (mapMode === "globe") {
+    projection = d3.geoOrthographic().rotate([0, -18, 0]).clipAngle(90).precision(0.3);
+  } else {
+    projection = d3.geoEquirectangular().precision(0.3);
+  }
+  path.projection(projection);
+  this.classList.toggle("map", mapMode === "map");
+  this.setAttribute("aria-pressed", mapMode === "map");
+  this.setAttribute("aria-label", mapMode === "map" ? "Switch to globe" : "Switch to flat map");
+  svg.classed("flat", mapMode === "map");
+  const spinToggle = document.getElementById("toggleSpin");
+  spinToggle.classList.toggle("disabled", mapMode === "map");
+  spinToggle.setAttribute("aria-disabled", mapMode === "map");
+  document.getElementById("mapHint").textContent = mapMode === "map" ? "Drag horizontally to wrap · scroll to zoom" : "Drag to rotate · scroll to zoom";
+  fitProjection();
+  reprojectAll();
+  render();
+});
 
 document.getElementById("schemaBtn").onclick = () => { document.getElementById("schemaPanel").classList.add("open"); document.getElementById("overlay").classList.add("open"); };
 document.getElementById("schemaClose").onclick = closeSchema;
