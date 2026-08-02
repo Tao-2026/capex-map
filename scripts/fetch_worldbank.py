@@ -240,6 +240,7 @@ def normalize_project(
         "funders": [
             {
                 "entity": "World Bank Group",
+                "country": "World Bank Group",
                 "instruments": sources,
                 "coords": WORLD_BANK_COORDS,
                 "amount_usd_b": round(amount / 1_000_000_000, 3),
