@@ -1,0 +1,29 @@
+{
+  "schema_version": "rd-mark-1",
+  "generated_at": "2026-08-02T07:30:16+00:00",
+  "source_url": "https://search.worldbank.org/api/v2/projects?format=json&status_exact=Active&frmYear=2021&toYear=2026",
+  "filters": {
+    "status": "Active",
+    "from_year": 2021,
+    "to_year": 2026,
+    "min_amount_usd": 500000000,
+    "target_sectors": [
+      "Energy & Extractives",
+      "Transport Infrastructure",
+      "Water Infrastructure",
+      "Urban Development"
+    ]
+  },
+  "counts": {
+    "fetched": 1284,
+    "missing_amount": 42,
+    "below_amount_threshold": 1177,
+    "unclassified_sector": 875,
+    "selected": 38,
+    "selected_missing_coords": 4,
+    "selected_multi_country": 0,
+    "selected_name_inference": 9,
+    "selected_policy_financing": 8
+  },
+  "selected_amount_usd": 24754880000
+}

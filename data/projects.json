@@ -1,0 +1,1814 @@
+[
+  {
+    "id": "P181195",
+    "name": "Second Low-Carbon Energy Programmatic Development Policy Financing",
+    "sector": "Energy & Extractives",
+    "sector_classification": "project_name_inference",
+    "amount_usd": 1500000000,
+    "amount_usd_b": 1.5,
+    "amount_source": "totalamt",
+    "year": 2024,
+    "approval_date": "2024-06-28T00:00:00Z",
+    "status": "Active",
+    "lending_instrument": "Development Policy Lending",
+    "recipient": {
+      "country": "India",
+      "country_code": "IN",
+      "coords": [
+        77.225,
+        28.6353
+      ],
+      "all_country_codes": [
+        "IN"
+      ],
+      "all_country_names": [
+        "Republic of India"
+      ]
+    },
+    "funders": [
+      {
+        "entity": "World Bank Group",
+        "country": "World Bank Group",
+        "instruments": [
+          "IBRD"
+        ],
+        "coords": [
+          -77.0369,
+          38.9072
+        ],
+        "amount_usd_b": 1.5
+      }
+    ],
+    "source": {
+      "provider": "World Bank Projects & Operations",
+      "project_id": "P181195",
+      "url": "https://projects.worldbank.org/en/projects-operations/project-detail/P181195"
+    },
+    "last_updated": "2024-06-30 00:00:00.0",
+    "observed_at": "2026-08-02T07:30:16+00:00"
+  },
+  {
+    "id": "P179077",
+    "name": "South Africa Sustainable and Low-Carbon Energy Transition Development Policy Loan",
+    "sector": "Energy & Extractives",
+    "sector_classification": "world_bank_sector",
+    "amount_usd": 1000000000,
+    "amount_usd_b": 1.0,
+    "amount_source": "totalamt",
+    "year": 2023,
+    "approval_date": "2023-10-24T00:00:00Z",
+    "status": "Active",
+    "lending_instrument": "Development Policy Lending",
+    "recipient": {
+      "country": "South Africa",
+      "country_code": "ZA",
+      "coords": [
+        28.1871,
+        -25.746
+      ],
+      "all_country_codes": [
+        "ZA"
+      ],
+      "all_country_names": [
+        "Republic of South Africa"
+      ]
+    },
+    "funders": [
+      {
+        "entity": "World Bank Group",
+        "country": "World Bank Group",
+        "instruments": [
+          "IBRD"
+        ],
+        "coords": [
+          -77.0369,
+          38.9072
+        ],
+        "amount_usd_b": 1.0
+      }
+    ],
+    "source": {
+      "provider": "World Bank Projects & Operations",
+      "project_id": "P179077",
+      "url": "https://projects.worldbank.org/en/projects-operations/project-detail/P179077"
+    },
+    "last_updated": "2023-10-25 00:00:00.0",
+    "observed_at": "2026-08-02T07:30:16+00:00"
+  },
+  {
+    "id": "P181423",
+    "name": "Second Additional Financing for Dasu Hydropower Stage I Project",
+    "sector": "Energy & Extractives",
+    "sector_classification": "world_bank_sector",
+    "amount_usd": 1000000000,
+    "amount_usd_b": 1.0,
+    "amount_source": "totalamt",
+    "year": 2024,
+    "approval_date": "2024-06-10T00:00:00Z",
+    "status": "Active",
+    "lending_instrument": "Investment Project Financing",
+    "recipient": {
+      "country": "Pakistan",
+      "country_code": "PK",
+      "coords": [
+        72.8,
+        30.5167
+      ],
+      "all_country_codes": [
+        "PK"
+      ],
+      "all_country_names": [
+        "Islamic Republic of Pakistan"
+      ]
+    },
+    "funders": [
+      {
+        "entity": "World Bank Group",
+        "country": "World Bank Group",
+        "instruments": [
+          "IBRD"
+        ],
+        "coords": [
+          -77.0369,
+          38.9072
+        ],
+        "amount_usd_b": 1.0
+      }
+    ],
+    "source": {
+      "provider": "World Bank Projects & Operations",
+      "project_id": "P181423",
+      "url": "https://projects.worldbank.org/en/projects-operations/project-detail/P181423"
+    },
+    "last_updated": "2024-06-11 00:00:00.0",
+    "observed_at": "2026-08-02T07:30:16+00:00"
+  },
+  {
+    "id": "P180470",
+    "name": "First Inclusive and Resilient Market Economy Development Policy Operation",
+    "sector": "Energy & Extractives",
+    "sector_classification": "world_bank_sector",
+    "amount_usd": 800000000,
+    "amount_usd_b": 0.8,
+    "amount_source": "totalamt",
+    "year": 2023,
+    "approval_date": "2023-12-07T00:00:00Z",
+    "status": "Active",
+    "lending_instrument": "Development Policy Lending",
+    "recipient": {
+      "country": "Uzbekistan",
+      "country_code": "UZ",
+      "coords": [
+        69.269,
+        41.3052
+      ],
+      "all_country_codes": [
+        "UZ"
+      ],
+      "all_country_names": [
+        "Republic of Uzbekistan"
+      ]
+    },
+    "funders": [
+      {
+        "entity": "World Bank Group",
+        "country": "World Bank Group",
+        "instruments": [
+          "IBRD"
+        ],
+        "coords": [
+          -77.0369,
+          38.9072
+        ],
+        "amount_usd_b": 0.8
+      }
+    ],
+    "source": {
+      "provider": "World Bank Projects & Operations",
+      "project_id": "P180470",
+      "url": "https://projects.worldbank.org/en/projects-operations/project-detail/P180470"
+    },
+    "last_updated": "2023-12-11 00:00:00.0",
+    "observed_at": "2026-08-02T07:30:16+00:00"
+  },
+  {
+    "id": "P178566",
+    "name": "Food Systems Resilience Program for Eastern and Southern Africa",
+    "sector": "Water Infrastructure",
+    "sector_classification": "world_bank_sector",
+    "amount_usd": 788100000,
+    "amount_usd_b": 0.788,
+    "amount_source": "totalamt",
+    "year": 2022,
+    "approval_date": "2022-06-21T00:00:00Z",
+    "status": "Active",
+    "lending_instrument": "Investment Project Financing",
+    "recipient": {
+      "country": "Eastern and Southern Africa",
+      "country_code": "3E",
+      "coords": null,
+      "all_country_codes": [
+        "3E"
+      ],
+      "all_country_names": [
+        "Eastern and Southern Africa"
+      ]
+    },
+    "funders": [
+      {
+        "entity": "World Bank Group",
+        "country": "World Bank Group",
+        "instruments": [
+          "IBRD"
+        ],
+        "coords": [
+          -77.0369,
+          38.9072
+        ],
+        "amount_usd_b": 0.788
+      }
+    ],
+    "source": {
+      "provider": "World Bank Projects & Operations",
+      "project_id": "P178566",
+      "url": "https://projects.worldbank.org/en/projects-operations/project-detail/P178566"
+    },
+    "last_updated": "2022-06-23 00:00:00.0",
+    "observed_at": "2026-08-02T07:30:16+00:00"
+  },
+  {
+    "id": "P176549",
+    "name": "Accelerating Transport and Trade Connectivity in Eastern South Asia – Bangladesh Phase 1 Project",
+    "sector": "Urban Development",
+    "sector_classification": "world_bank_sector",
+    "amount_usd": 753450000,
+    "amount_usd_b": 0.753,
+    "amount_source": "totalamt",
+    "year": 2022,
+    "approval_date": "2022-06-28T00:00:00Z",
+    "status": "Active",
+    "lending_instrument": "Investment Project Financing",
+    "recipient": {
+      "country": "Bangladesh",
+      "country_code": "BD",
+      "coords": [
+        90.4113,
+        23.7055
+      ],
+      "all_country_codes": [
+        "BD"
+      ],
+      "all_country_names": [
+        "People's Republic of Bangladesh"
+      ]
+    },
+    "funders": [
+      {
+        "entity": "World Bank Group",
+        "country": "World Bank Group",
+        "instruments": [
+          "IBRD"
+        ],
+        "coords": [
+          -77.0369,
+          38.9072
+        ],
+        "amount_usd_b": 0.753
+      }
+    ],
+    "source": {
+      "provider": "World Bank Projects & Operations",
+      "project_id": "P176549",
+      "url": "https://projects.worldbank.org/en/projects-operations/project-detail/P176549"
+    },
+    "last_updated": "2022-06-30 00:00:00.0",
+    "observed_at": "2026-08-02T07:30:16+00:00"
+  },
+  {
+    "id": "P174622",
+    "name": "Nigeria - AF Power Sector Recovery Performance Based Operation",
+    "sector": "Energy & Extractives",
+    "sector_classification": "world_bank_sector",
+    "amount_usd": 750000000,
+    "amount_usd_b": 0.75,
+    "amount_source": "totalamt",
+    "year": 2023,
+    "approval_date": "2023-06-09T00:00:00Z",
+    "status": "Active",
+    "lending_instrument": "Program-for-Results Financing",
+    "recipient": {
+      "country": "Nigeria",
+      "country_code": "NG",
+      "coords": [
+        7.48906,
+        9.05804
+      ],
+      "all_country_codes": [
+        "NG"
+      ],
+      "all_country_names": [
+        "Federal Republic of Nigeria"
+      ]
+    },
+    "funders": [
+      {
+        "entity": "World Bank Group",
+        "country": "World Bank Group",
+        "instruments": [
+          "IBRD"
+        ],
+        "coords": [
+          -77.0369,
+          38.9072
+        ],
+        "amount_usd_b": 0.75
+      }
+    ],
+    "source": {
+      "provider": "World Bank Projects & Operations",
+      "project_id": "P174622",
+      "url": "https://projects.worldbank.org/en/projects-operations/project-detail/P174622"
+    },
+    "last_updated": "2023-06-13 00:00:00.0",
+    "observed_at": "2026-08-02T07:30:16+00:00"
+  },
+  {
+    "id": "P178634",
+    "name": "Philippines First Sustainable Recovery DPL",
+    "sector": "Energy & Extractives",
+    "sector_classification": "world_bank_sector",
+    "amount_usd": 750000000,
+    "amount_usd_b": 0.75,
+    "amount_source": "totalamt",
+    "year": 2023,
+    "approval_date": "2023-06-13T00:00:00Z",
+    "status": "Active",
+    "lending_instrument": "Development Policy Lending",
+    "recipient": {
+      "country": "Philippines",
+      "country_code": "PH",
+      "coords": [
+        121.035,
+        14.5515
+      ],
+      "all_country_codes": [
+        "PH"
+      ],
+      "all_country_names": [
+        "Republic of the Philippines"
+      ]
+    },
+    "funders": [
+      {
+        "entity": "World Bank Group",
+        "country": "World Bank Group",
+        "instruments": [
+          "IBRD"
+        ],
+        "coords": [
+          -77.0369,
+          38.9072
+        ],
+        "amount_usd_b": 0.75
+      }
+    ],
+    "source": {
+      "provider": "World Bank Projects & Operations",
+      "project_id": "P178634",
+      "url": "https://projects.worldbank.org/en/projects-operations/project-detail/P178634"
+    },
+    "last_updated": "2023-06-15 00:00:00.0",
+    "observed_at": "2026-08-02T07:30:16+00:00"
+  },
+  {
+    "id": "P179214",
+    "name": "Peru: Enabling a Green and Resilient Development DPF - DDO II",
+    "sector": "Energy & Extractives",
+    "sector_classification": "world_bank_sector",
+    "amount_usd": 750000000,
+    "amount_usd_b": 0.75,
+    "amount_source": "totalamt",
+    "year": 2023,
+    "approval_date": "2023-10-26T00:00:00Z",
+    "status": "Active",
+    "lending_instrument": "Development Policy Lending",
+    "recipient": {
+      "country": "Peru",
+      "country_code": "PE",
+      "coords": [
+        -77.0465,
+        -12.0931
+      ],
+      "all_country_codes": [
+        "PE"
+      ],
+      "all_country_names": [
+        "Republic of Peru"
+      ]
+    },
+    "funders": [
+      {
+        "entity": "World Bank Group",
+        "country": "World Bank Group",
+        "instruments": [
+          "IBRD"
+        ],
+        "coords": [
+          -77.0369,
+          38.9072
+        ],
+        "amount_usd_b": 0.75
+      }
+    ],
+    "source": {
+      "provider": "World Bank Projects & Operations",
+      "project_id": "P179214",
+      "url": "https://projects.worldbank.org/en/projects-operations/project-detail/P179214"
+    },
+    "last_updated": "2023-10-27 00:00:00.0",
+    "observed_at": "2026-08-02T07:30:16+00:00"
+  },
+  {
+    "id": "P179687",
+    "name": "Nigeria Distributed Access through Renewable Energy Scale-up Project",
+    "sector": "Energy & Extractives",
+    "sector_classification": "project_name_inference",
+    "amount_usd": 750000000,
+    "amount_usd_b": 0.75,
+    "amount_source": "totalamt",
+    "year": 2023,
+    "approval_date": "2023-12-14T00:00:00Z",
+    "status": "Active",
+    "lending_instrument": "Investment Project Financing",
+    "recipient": {
+      "country": "Nigeria",
+      "country_code": "NG",
+      "coords": [
+        7.48906,
+        9.05804
+      ],
+      "all_country_codes": [
+        "NG"
+      ],
+      "all_country_names": [
+        "Federal Republic of Nigeria"
+      ]
+    },
+    "funders": [
+      {
+        "entity": "World Bank Group",
+        "country": "World Bank Group",
+        "instruments": [
+          "IBRD"
+        ],
+        "coords": [
+          -77.0369,
+          38.9072
+        ],
+        "amount_usd_b": 0.75
+      }
+    ],
+    "source": {
+      "provider": "World Bank Projects & Operations",
+      "project_id": "P179687",
+      "url": "https://projects.worldbank.org/en/projects-operations/project-detail/P179687"
+    },
+    "last_updated": "2023-12-18 00:00:00.0",
+    "observed_at": "2026-08-02T07:30:16+00:00"
+  },
+  {
+    "id": "P181080",
+    "name": "Colombia Green and Resilient DPO 2",
+    "sector": "Energy & Extractives",
+    "sector_classification": "world_bank_sector",
+    "amount_usd": 750000000,
+    "amount_usd_b": 0.75,
+    "amount_source": "totalamt",
+    "year": 2024,
+    "approval_date": "2024-03-28T00:00:00Z",
+    "status": "Active",
+    "lending_instrument": "Development Policy Lending",
+    "recipient": {
+      "country": "Colombia",
+      "country_code": "CO",
+      "coords": [
+        -74.082,
+        4.60987
+      ],
+      "all_country_codes": [
+        "CO"
+      ],
+      "all_country_names": [
+        "Republic of Colombia"
+      ]
+    },
+    "funders": [
+      {
+        "entity": "World Bank Group",
+        "country": "World Bank Group",
+        "instruments": [
+          "IBRD"
+        ],
+        "coords": [
+          -77.0369,
+          38.9072
+        ],
+        "amount_usd_b": 0.75
+      }
+    ],
+    "source": {
+      "provider": "World Bank Projects & Operations",
+      "project_id": "P181080",
+      "url": "https://projects.worldbank.org/en/projects-operations/project-detail/P181080"
+    },
+    "last_updated": "2024-04-04 00:00:00.0",
+    "observed_at": "2026-08-02T07:30:16+00:00"
+  },
+  {
+    "id": "P174485",
+    "name": "Horn of Africa Initiative: Regional Economic Corridor Project (Addis-Djibouti Corridor)",
+    "sector": "Urban Development",
+    "sector_classification": "world_bank_sector",
+    "amount_usd": 730000000,
+    "amount_usd_b": 0.73,
+    "amount_source": "totalamt",
+    "year": 2023,
+    "approval_date": "2023-07-20T00:00:00Z",
+    "status": "Active",
+    "lending_instrument": "Investment Project Financing",
+    "recipient": {
+      "country": "Eastern and Southern Africa",
+      "country_code": "3E",
+      "coords": null,
+      "all_country_codes": [
+        "3E"
+      ],
+      "all_country_names": [
+        "Eastern and Southern Africa"
+      ]
+    },
+    "funders": [
+      {
+        "entity": "World Bank Group",
+        "country": "World Bank Group",
+        "instruments": [
+          "IBRD"
+        ],
+        "coords": [
+          -77.0369,
+          38.9072
+        ],
+        "amount_usd_b": 0.73
+      }
+    ],
+    "source": {
+      "provider": "World Bank Projects & Operations",
+      "project_id": "P174485",
+      "url": "https://projects.worldbank.org/en/projects-operations/project-detail/P174485"
+    },
+    "last_updated": "2023-07-21 00:00:00.0",
+    "observed_at": "2026-08-02T07:30:16+00:00"
+  },
+  {
+    "id": "P170734",
+    "name": "Nigeria Sustainable Urban and Rural Water Supply, Sanitation and Hygiene Program-for-Results",
+    "sector": "Water Infrastructure",
+    "sector_classification": "world_bank_sector",
+    "amount_usd": 700000000,
+    "amount_usd_b": 0.7,
+    "amount_source": "totalamt",
+    "year": 2021,
+    "approval_date": "2021-05-25T00:00:00Z",
+    "status": "Active",
+    "lending_instrument": "Program-for-Results Financing",
+    "recipient": {
+      "country": "Nigeria",
+      "country_code": "NG",
+      "coords": [
+        7.48906,
+        9.05804
+      ],
+      "all_country_codes": [
+        "NG"
+      ],
+      "all_country_names": [
+        "Federal Republic of Nigeria"
+      ]
+    },
+    "funders": [
+      {
+        "entity": "World Bank Group",
+        "country": "World Bank Group",
+        "instruments": [
+          "IBRD"
+        ],
+        "coords": [
+          -77.0369,
+          38.9072
+        ],
+        "amount_usd_b": 0.7
+      }
+    ],
+    "source": {
+      "provider": "World Bank Projects & Operations",
+      "project_id": "P170734",
+      "url": "https://projects.worldbank.org/en/projects-operations/project-detail/P170734"
+    },
+    "last_updated": "2021-05-27 00:00:00.0",
+    "observed_at": "2026-08-02T07:30:16+00:00"
+  },
+  {
+    "id": "P180496",
+    "name": "Mexico Promoting Women’s Economic Opportunities and Sustainable Productivity Growth DPL",
+    "sector": "Transport Infrastructure",
+    "sector_classification": "world_bank_sector",
+    "amount_usd": 700000000,
+    "amount_usd_b": 0.7,
+    "amount_source": "totalamt",
+    "year": 2023,
+    "approval_date": "2023-06-23T00:00:00Z",
+    "status": "Active",
+    "lending_instrument": "Development Policy Lending",
+    "recipient": {
+      "country": "Mexico",
+      "country_code": "MX",
+      "coords": [
+        -99.1276,
+        19.427
+      ],
+      "all_country_codes": [
+        "MX"
+      ],
+      "all_country_names": [
+        "United Mexican States"
+      ]
+    },
+    "funders": [
+      {
+        "entity": "World Bank Group",
+        "country": "World Bank Group",
+        "instruments": [
+          "IBRD"
+        ],
+        "coords": [
+          -77.0369,
+          38.9072
+        ],
+        "amount_usd_b": 0.7
+      }
+    ],
+    "source": {
+      "provider": "World Bank Projects & Operations",
+      "project_id": "P180496",
+      "url": "https://projects.worldbank.org/en/projects-operations/project-detail/P180496"
+    },
+    "last_updated": "2023-06-24 00:00:00.0",
+    "observed_at": "2026-08-02T07:30:16+00:00"
+  },
+  {
+    "id": "P176375",
+    "name": "Accelerating the Market Transition for Distributed Energy Program as part of ECARES MPA",
+    "sector": "Energy & Extractives",
+    "sector_classification": "project_name_inference",
+    "amount_usd": 664400000,
+    "amount_usd_b": 0.664,
+    "amount_source": "totalamt",
+    "year": 2024,
+    "approval_date": "2024-03-28T00:00:00Z",
+    "status": "Active",
+    "lending_instrument": "Program-for-Results Financing",
+    "recipient": {
+      "country": "Turkiye",
+      "country_code": "TR",
+      "coords": [
+        32.3606,
+        39.7153
+      ],
+      "all_country_codes": [
+        "TR"
+      ],
+      "all_country_names": [
+        "Republic of Turkiye"
+      ]
+    },
+    "funders": [
+      {
+        "entity": "World Bank Group",
+        "country": "World Bank Group",
+        "instruments": [
+          "IBRD"
+        ],
+        "coords": [
+          -77.0369,
+          38.9072
+        ],
+        "amount_usd_b": 0.664
+      }
+    ],
+    "source": {
+      "provider": "World Bank Projects & Operations",
+      "project_id": "P176375",
+      "url": "https://projects.worldbank.org/en/projects-operations/project-detail/P176375"
+    },
+    "last_updated": "2024-03-30 00:00:00.0",
+    "observed_at": "2026-08-02T07:30:16+00:00"
+  },
+  {
+    "id": "P179128",
+    "name": "Eastern Türkiye Middle Corridor Railway Development Project",
+    "sector": "Transport Infrastructure",
+    "sector_classification": "project_name_inference",
+    "amount_usd": 660000000,
+    "amount_usd_b": 0.66,
+    "amount_source": "totalamt",
+    "year": 2024,
+    "approval_date": "2024-12-05T00:00:00Z",
+    "status": "Active",
+    "lending_instrument": "Investment Project Financing",
+    "recipient": {
+      "country": "Turkiye",
+      "country_code": "TR",
+      "coords": [
+        32.3606,
+        39.7153
+      ],
+      "all_country_codes": [
+        "TR"
+      ],
+      "all_country_names": [
+        "Republic of Turkiye"
+      ]
+    },
+    "funders": [
+      {
+        "entity": "World Bank Group",
+        "country": "World Bank Group",
+        "instruments": [
+          "IBRD"
+        ],
+        "coords": [
+          -77.0369,
+          38.9072
+        ],
+        "amount_usd_b": 0.66
+      }
+    ],
+    "source": {
+      "provider": "World Bank Projects & Operations",
+      "project_id": "P179128",
+      "url": "https://projects.worldbank.org/en/projects-operations/project-detail/P179128"
+    },
+    "last_updated": "2024-12-08 00:00:00.0",
+    "observed_at": "2026-08-02T07:30:16+00:00"
+  },
+  {
+    "id": "P177816",
+    "name": "Food Systems Resilience Program for Eastern and Southern Africa (Phase 3) FSRP",
+    "sector": "Water Infrastructure",
+    "sector_classification": "world_bank_sector",
+    "amount_usd": 603000000,
+    "amount_usd_b": 0.603,
+    "amount_source": "totalamt",
+    "year": 2023,
+    "approval_date": "2023-05-31T00:00:00Z",
+    "status": "Active",
+    "lending_instrument": "Investment Project Financing",
+    "recipient": {
+      "country": "Eastern and Southern Africa",
+      "country_code": "3E",
+      "coords": null,
+      "all_country_codes": [
+        "3E"
+      ],
+      "all_country_names": [
+        "Eastern and Southern Africa"
+      ]
+    },
+    "funders": [
+      {
+        "entity": "World Bank Group",
+        "country": "World Bank Group",
+        "instruments": [
+          "IBRD"
+        ],
+        "coords": [
+          -77.0369,
+          38.9072
+        ],
+        "amount_usd_b": 0.603
+      }
+    ],
+    "source": {
+      "provider": "World Bank Projects & Operations",
+      "project_id": "P177816",
+      "url": "https://projects.worldbank.org/en/projects-operations/project-detail/P177816"
+    },
+    "last_updated": "2023-06-01 00:00:00.0",
+    "observed_at": "2026-08-02T07:30:16+00:00"
+  },
+  {
+    "id": "P173506",
+    "name": "Access Governance & Reform for the Electricity and Water Sectors Project",
+    "sector": "Energy & Extractives",
+    "sector_classification": "world_bank_sector",
+    "amount_usd": 600000000,
+    "amount_usd_b": 0.6,
+    "amount_source": "totalamt",
+    "year": 2022,
+    "approval_date": "2022-03-31T00:00:00Z",
+    "status": "Active",
+    "lending_instrument": "Investment Project Financing",
+    "recipient": {
+      "country": "Congo, Democratic Republic of",
+      "country_code": "ZR",
+      "coords": [
+        15.3222,
+        -4.325
+      ],
+      "all_country_codes": [
+        "ZR"
+      ],
+      "all_country_names": [
+        "Democratic Republic of the Congo"
+      ]
+    },
+    "funders": [
+      {
+        "entity": "World Bank Group",
+        "country": "World Bank Group",
+        "instruments": [
+          "IBRD"
+        ],
+        "coords": [
+          -77.0369,
+          38.9072
+        ],
+        "amount_usd_b": 0.6
+      }
+    ],
+    "source": {
+      "provider": "World Bank Projects & Operations",
+      "project_id": "P173506",
+      "url": "https://projects.worldbank.org/en/projects-operations/project-detail/P173506"
+    },
+    "last_updated": "2022-04-02 00:00:00.0",
+    "observed_at": "2026-08-02T07:30:16+00:00"
+  },
+  {
+    "id": "P178067",
+    "name": "Buenos Aires – Belgrano Sur Passenger Railway Line Modernization Project",
+    "sector": "Transport Infrastructure",
+    "sector_classification": "world_bank_sector",
+    "amount_usd": 600000000,
+    "amount_usd_b": 0.6,
+    "amount_source": "totalamt",
+    "year": 2022,
+    "approval_date": "2022-05-31T00:00:00Z",
+    "status": "Active",
+    "lending_instrument": "Investment Project Financing",
+    "recipient": {
+      "country": "Argentina",
+      "country_code": "AR",
+      "coords": [
+        -58.4173,
+        -34.6118
+      ],
+      "all_country_codes": [
+        "AR"
+      ],
+      "all_country_names": [
+        "Argentine Republic"
+      ]
+    },
+    "funders": [
+      {
+        "entity": "World Bank Group",
+        "country": "World Bank Group",
+        "instruments": [
+          "IBRD"
+        ],
+        "coords": [
+          -77.0369,
+          38.9072
+        ],
+        "amount_usd_b": 0.6
+      }
+    ],
+    "source": {
+      "provider": "World Bank Projects & Operations",
+      "project_id": "P178067",
+      "url": "https://projects.worldbank.org/en/projects-operations/project-detail/P178067"
+    },
+    "last_updated": "2022-06-02 00:00:00.0",
+    "observed_at": "2026-08-02T07:30:16+00:00"
+  },
+  {
+    "id": "P179313",
+    "name": "Türkiye Flood and Drought Management Project",
+    "sector": "Water Infrastructure",
+    "sector_classification": "project_name_inference",
+    "amount_usd": 600000000,
+    "amount_usd_b": 0.6,
+    "amount_source": "totalamt",
+    "year": 2024,
+    "approval_date": "2024-06-27T00:00:00Z",
+    "status": "Active",
+    "lending_instrument": "Investment Project Financing",
+    "recipient": {
+      "country": "Turkiye",
+      "country_code": "TR",
+      "coords": [
+        32.3606,
+        39.7153
+      ],
+      "all_country_codes": [
+        "TR"
+      ],
+      "all_country_names": [
+        "Republic of Turkiye"
+      ]
+    },
+    "funders": [
+      {
+        "entity": "World Bank Group",
+        "country": "World Bank Group",
+        "instruments": [
+          "IBRD"
+        ],
+        "coords": [
+          -77.0369,
+          38.9072
+        ],
+        "amount_usd_b": 0.6
+      }
+    ],
+    "source": {
+      "provider": "World Bank Projects & Operations",
+      "project_id": "P179313",
+      "url": "https://projects.worldbank.org/en/projects-operations/project-detail/P179313"
+    },
+    "last_updated": "2024-06-30 00:00:00.0",
+    "observed_at": "2026-08-02T07:30:16+00:00"
+  },
+  {
+    "id": "P166685",
+    "name": "Electricity Access Scale-up Project (EASP)",
+    "sector": "Energy & Extractives",
+    "sector_classification": "world_bank_sector",
+    "amount_usd": 568000000,
+    "amount_usd_b": 0.568,
+    "amount_source": "totalamt",
+    "year": 2022,
+    "approval_date": "2022-03-31T00:00:00Z",
+    "status": "Active",
+    "lending_instrument": "Investment Project Financing",
+    "recipient": {
+      "country": "Uganda",
+      "country_code": "UG",
+      "coords": [
+        32.5729,
+        0.314269
+      ],
+      "all_country_codes": [
+        "UG"
+      ],
+      "all_country_names": [
+        "Republic of Uganda"
+      ]
+    },
+    "funders": [
+      {
+        "entity": "World Bank Group",
+        "country": "World Bank Group",
+        "instruments": [
+          "IBRD"
+        ],
+        "coords": [
+          -77.0369,
+          38.9072
+        ],
+        "amount_usd_b": 0.568
+      }
+    ],
+    "source": {
+      "provider": "World Bank Projects & Operations",
+      "project_id": "P166685",
+      "url": "https://projects.worldbank.org/en/projects-operations/project-detail/P166685"
+    },
+    "last_updated": "2022-04-02 00:00:00.0",
+    "observed_at": "2026-08-02T07:30:16+00:00"
+  },
+  {
+    "id": "P175660",
+    "name": "Greater Kampala Metropolitan Area Urban Development Program",
+    "sector": "Urban Development",
+    "sector_classification": "project_name_inference",
+    "amount_usd": 566000000,
+    "amount_usd_b": 0.566,
+    "amount_source": "totalamt",
+    "year": 2022,
+    "approval_date": "2022-05-31T00:00:00Z",
+    "status": "Active",
+    "lending_instrument": "Program-for-Results Financing",
+    "recipient": {
+      "country": "Uganda",
+      "country_code": "UG",
+      "coords": [
+        32.5729,
+        0.314269
+      ],
+      "all_country_codes": [
+        "UG"
+      ],
+      "all_country_names": [
+        "Republic of Uganda"
+      ]
+    },
+    "funders": [
+      {
+        "entity": "World Bank Group",
+        "country": "World Bank Group",
+        "instruments": [
+          "IBRD"
+        ],
+        "coords": [
+          -77.0369,
+          38.9072
+        ],
+        "amount_usd_b": 0.566
+      }
+    ],
+    "source": {
+      "provider": "World Bank Projects & Operations",
+      "project_id": "P175660",
+      "url": "https://projects.worldbank.org/en/projects-operations/project-detail/P175660"
+    },
+    "last_updated": "2022-06-02 00:00:00.0",
+    "observed_at": "2026-08-02T07:30:16+00:00"
+  },
+  {
+    "id": "P165660",
+    "name": "Tanzania Transport Integration Project",
+    "sector": "Urban Development",
+    "sector_classification": "world_bank_sector",
+    "amount_usd": 550000000,
+    "amount_usd_b": 0.55,
+    "amount_source": "totalamt",
+    "year": 2022,
+    "approval_date": "2022-05-24T00:00:00Z",
+    "status": "Active",
+    "lending_instrument": "Investment Project Financing",
+    "recipient": {
+      "country": "Tanzania",
+      "country_code": "TZ",
+      "coords": [
+        35.7382,
+        -6.17486
+      ],
+      "all_country_codes": [
+        "TZ"
+      ],
+      "all_country_names": [
+        "United Republic of Tanzania"
+      ]
+    },
+    "funders": [
+      {
+        "entity": "World Bank Group",
+        "country": "World Bank Group",
+        "instruments": [
+          "IBRD"
+        ],
+        "coords": [
+          -77.0369,
+          38.9072
+        ],
+        "amount_usd_b": 0.55
+      }
+    ],
+    "source": {
+      "provider": "World Bank Projects & Operations",
+      "project_id": "P165660",
+      "url": "https://projects.worldbank.org/en/projects-operations/project-detail/P165660"
+    },
+    "last_updated": "2022-05-26 00:00:00.0",
+    "observed_at": "2026-08-02T07:30:16+00:00"
+  },
+  {
+    "id": "P179867",
+    "name": "Public and Municipal Renewable Energy Project",
+    "sector": "Energy & Extractives",
+    "sector_classification": "world_bank_sector",
+    "amount_usd": 549150000,
+    "amount_usd_b": 0.549,
+    "amount_source": "totalamt",
+    "year": 2023,
+    "approval_date": "2023-06-13T00:00:00Z",
+    "status": "Active",
+    "lending_instrument": "Investment Project Financing",
+    "recipient": {
+      "country": "Turkiye",
+      "country_code": "TR",
+      "coords": [
+        32.3606,
+        39.7153
+      ],
+      "all_country_codes": [
+        "TR"
+      ],
+      "all_country_names": [
+        "Republic of Turkiye"
+      ]
+    },
+    "funders": [
+      {
+        "entity": "World Bank Group",
+        "country": "World Bank Group",
+        "instruments": [
+          "IBRD"
+        ],
+        "coords": [
+          -77.0369,
+          38.9072
+        ],
+        "amount_usd_b": 0.549
+      }
+    ],
+    "source": {
+      "provider": "World Bank Projects & Operations",
+      "project_id": "P179867",
+      "url": "https://projects.worldbank.org/en/projects-operations/project-detail/P179867"
+    },
+    "last_updated": "2023-06-15 00:00:00.0",
+    "observed_at": "2026-08-02T07:30:16+00:00"
+  },
+  {
+    "id": "P167798",
+    "name": "Cameroon-Chad Transport Corridor",
+    "sector": "Transport Infrastructure",
+    "sector_classification": "project_name_inference",
+    "amount_usd": 538000000,
+    "amount_usd_b": 0.538,
+    "amount_source": "totalamt",
+    "year": 2022,
+    "approval_date": "2022-02-15T00:00:00Z",
+    "status": "Active",
+    "lending_instrument": "Investment Project Financing",
+    "recipient": {
+      "country": "Western and Central Africa",
+      "country_code": "3W",
+      "coords": null,
+      "all_country_codes": [
+        "3W"
+      ],
+      "all_country_names": [
+        "Western and Central Africa"
+      ]
+    },
+    "funders": [
+      {
+        "entity": "World Bank Group",
+        "country": "World Bank Group",
+        "instruments": [
+          "IBRD"
+        ],
+        "coords": [
+          -77.0369,
+          38.9072
+        ],
+        "amount_usd_b": 0.538
+      }
+    ],
+    "source": {
+      "provider": "World Bank Projects & Operations",
+      "project_id": "P167798",
+      "url": "https://projects.worldbank.org/en/projects-operations/project-detail/P167798"
+    },
+    "last_updated": "2022-02-20 00:00:00.0",
+    "observed_at": "2026-08-02T07:30:16+00:00"
+  },
+  {
+    "id": "P176731",
+    "name": "Power Sector Reform, Investment and Modernization in Ethiopia (PRIME-1)",
+    "sector": "Energy & Extractives",
+    "sector_classification": "project_name_inference",
+    "amount_usd": 522630000,
+    "amount_usd_b": 0.523,
+    "amount_source": "totalamt",
+    "year": 2024,
+    "approval_date": "2024-03-26T00:00:00Z",
+    "status": "Active",
+    "lending_instrument": "Investment Project Financing",
+    "recipient": {
+      "country": "Ethiopia",
+      "country_code": "ET",
+      "coords": [
+        38.7468,
+        9.02274
+      ],
+      "all_country_codes": [
+        "ET"
+      ],
+      "all_country_names": [
+        "Federal Democratic Republic of Ethiopia"
+      ]
+    },
+    "funders": [
+      {
+        "entity": "World Bank Group",
+        "country": "World Bank Group",
+        "instruments": [
+          "IBRD"
+        ],
+        "coords": [
+          -77.0369,
+          38.9072
+        ],
+        "amount_usd_b": 0.523
+      }
+    ],
+    "source": {
+      "provider": "World Bank Projects & Operations",
+      "project_id": "P176731",
+      "url": "https://projects.worldbank.org/en/projects-operations/project-detail/P176731"
+    },
+    "last_updated": "2024-03-28 00:00:00.0",
+    "observed_at": "2026-08-02T07:30:16+00:00"
+  },
+  {
+    "id": "P173025",
+    "name": "Climate and Disaster Resilient Cities Project",
+    "sector": "Urban Development",
+    "sector_classification": "world_bank_sector",
+    "amount_usd": 512150000,
+    "amount_usd_b": 0.512,
+    "amount_source": "totalamt",
+    "year": 2022,
+    "approval_date": "2022-09-27T00:00:00Z",
+    "status": "Active",
+    "lending_instrument": "Investment Project Financing",
+    "recipient": {
+      "country": "Turkiye",
+      "country_code": "TR",
+      "coords": [
+        32.3606,
+        39.7153
+      ],
+      "all_country_codes": [
+        "TR"
+      ],
+      "all_country_names": [
+        "Republic of Turkiye"
+      ]
+    },
+    "funders": [
+      {
+        "entity": "World Bank Group",
+        "country": "World Bank Group",
+        "instruments": [
+          "IBRD"
+        ],
+        "coords": [
+          -77.0369,
+          38.9072
+        ],
+        "amount_usd_b": 0.512
+      }
+    ],
+    "source": {
+      "provider": "World Bank Projects & Operations",
+      "project_id": "P173025",
+      "url": "https://projects.worldbank.org/en/projects-operations/project-detail/P173025"
+    },
+    "last_updated": "2022-09-28 00:00:00.0",
+    "observed_at": "2026-08-02T07:30:16+00:00"
+  },
+  {
+    "id": "P161877",
+    "name": "DRC Transport and Connectivity Support Project",
+    "sector": "Urban Development",
+    "sector_classification": "world_bank_sector",
+    "amount_usd": 500000000,
+    "amount_usd_b": 0.5,
+    "amount_source": "totalamt",
+    "year": 2022,
+    "approval_date": "2022-06-23T00:00:00Z",
+    "status": "Active",
+    "lending_instrument": "Investment Project Financing",
+    "recipient": {
+      "country": "Congo, Democratic Republic of",
+      "country_code": "ZR",
+      "coords": [
+        15.3222,
+        -4.325
+      ],
+      "all_country_codes": [
+        "ZR"
+      ],
+      "all_country_names": [
+        "Democratic Republic of the Congo"
+      ]
+    },
+    "funders": [
+      {
+        "entity": "World Bank Group",
+        "country": "World Bank Group",
+        "instruments": [
+          "IBRD"
+        ],
+        "coords": [
+          -77.0369,
+          38.9072
+        ],
+        "amount_usd_b": 0.5
+      }
+    ],
+    "source": {
+      "provider": "World Bank Projects & Operations",
+      "project_id": "P161877",
+      "url": "https://projects.worldbank.org/en/projects-operations/project-detail/P161877"
+    },
+    "last_updated": "2022-06-25 00:00:00.0",
+    "observed_at": "2026-08-02T07:30:16+00:00"
+  },
+  {
+    "id": "P171141",
+    "name": "Kinshasa Multisector Development and Urban Resilience Project",
+    "sector": "Energy & Extractives",
+    "sector_classification": "world_bank_sector",
+    "amount_usd": 500000000,
+    "amount_usd_b": 0.5,
+    "amount_source": "totalamt",
+    "year": 2021,
+    "approval_date": "2021-03-30T00:00:00Z",
+    "status": "Active",
+    "lending_instrument": "Investment Project Financing",
+    "recipient": {
+      "country": "Congo, Democratic Republic of",
+      "country_code": "ZR",
+      "coords": [
+        15.3222,
+        -4.325
+      ],
+      "all_country_codes": [
+        "ZR"
+      ],
+      "all_country_names": [
+        "Democratic Republic of the Congo"
+      ]
+    },
+    "funders": [
+      {
+        "entity": "World Bank Group",
+        "country": "World Bank Group",
+        "instruments": [
+          "IBRD"
+        ],
+        "coords": [
+          -77.0369,
+          38.9072
+        ],
+        "amount_usd_b": 0.5
+      }
+    ],
+    "source": {
+      "provider": "World Bank Projects & Operations",
+      "project_id": "P171141",
+      "url": "https://projects.worldbank.org/en/projects-operations/project-detail/P171141"
+    },
+    "last_updated": "2021-04-01 00:00:00.0",
+    "observed_at": "2026-08-02T07:30:16+00:00"
+  },
+  {
+    "id": "P171742",
+    "name": "Access to Distributed Electricity and Lighting in Ethiopia (ADELE)",
+    "sector": "Energy & Extractives",
+    "sector_classification": "world_bank_sector",
+    "amount_usd": 500000000,
+    "amount_usd_b": 0.5,
+    "amount_source": "totalamt",
+    "year": 2021,
+    "approval_date": "2021-03-29T00:00:00Z",
+    "status": "Active",
+    "lending_instrument": "Investment Project Financing",
+    "recipient": {
+      "country": "Ethiopia",
+      "country_code": "ET",
+      "coords": [
+        38.7468,
+        9.02274
+      ],
+      "all_country_codes": [
+        "ET"
+      ],
+      "all_country_names": [
+        "Federal Democratic Republic of Ethiopia"
+      ]
+    },
+    "funders": [
+      {
+        "entity": "World Bank Group",
+        "country": "World Bank Group",
+        "instruments": [
+          "IBRD"
+        ],
+        "coords": [
+          -77.0369,
+          38.9072
+        ],
+        "amount_usd_b": 0.5
+      }
+    ],
+    "source": {
+      "provider": "World Bank Projects & Operations",
+      "project_id": "P171742",
+      "url": "https://projects.worldbank.org/en/projects-operations/project-detail/P171742"
+    },
+    "last_updated": "2021-03-31 00:00:00.0",
+    "observed_at": "2026-08-02T07:30:16+00:00"
+  },
+  {
+    "id": "P172891",
+    "name": "Nigeria Distribution Sector Recovery Program",
+    "sector": "Energy & Extractives",
+    "sector_classification": "world_bank_sector",
+    "amount_usd": 500000000,
+    "amount_usd_b": 0.5,
+    "amount_source": "totalamt",
+    "year": 2021,
+    "approval_date": "2021-02-04T00:00:00Z",
+    "status": "Active",
+    "lending_instrument": "Program-for-Results Financing",
+    "recipient": {
+      "country": "Nigeria",
+      "country_code": "NG",
+      "coords": [
+        7.48906,
+        9.05804
+      ],
+      "all_country_codes": [
+        "NG"
+      ],
+      "all_country_names": [
+        "Federal Republic of Nigeria"
+      ]
+    },
+    "funders": [
+      {
+        "entity": "World Bank Group",
+        "country": "World Bank Group",
+        "instruments": [
+          "IBRD"
+        ],
+        "coords": [
+          -77.0369,
+          38.9072
+        ],
+        "amount_usd_b": 0.5
+      }
+    ],
+    "source": {
+      "provider": "World Bank Projects & Operations",
+      "project_id": "P172891",
+      "url": "https://projects.worldbank.org/en/projects-operations/project-detail/P172891"
+    },
+    "last_updated": "2021-02-06 00:00:00.0",
+    "observed_at": "2026-08-02T07:30:16+00:00"
+  },
+  {
+    "id": "P174350",
+    "name": "Indonesia Sustainable Least-cost Electrification-1 (ISLE-1) Program",
+    "sector": "Energy & Extractives",
+    "sector_classification": "world_bank_sector",
+    "amount_usd": 500000000,
+    "amount_usd_b": 0.5,
+    "amount_source": "totalamt",
+    "year": 2023,
+    "approval_date": "2023-06-26T00:00:00Z",
+    "status": "Active",
+    "lending_instrument": "Program-for-Results Financing",
+    "recipient": {
+      "country": "Indonesia",
+      "country_code": "ID",
+      "coords": [
+        106.83,
+        -6.19752
+      ],
+      "all_country_codes": [
+        "ID"
+      ],
+      "all_country_names": [
+        "Republic of Indonesia"
+      ]
+    },
+    "funders": [
+      {
+        "entity": "World Bank Group",
+        "country": "World Bank Group",
+        "instruments": [
+          "IBRD"
+        ],
+        "coords": [
+          -77.0369,
+          38.9072
+        ],
+        "amount_usd_b": 0.5
+      }
+    ],
+    "source": {
+      "provider": "World Bank Projects & Operations",
+      "project_id": "P174350",
+      "url": "https://projects.worldbank.org/en/projects-operations/project-detail/P174350"
+    },
+    "last_updated": "2023-06-27 00:00:00.0",
+    "observed_at": "2026-08-02T07:30:16+00:00"
+  },
+  {
+    "id": "P174650",
+    "name": "Electricity Distribution Modernization Program",
+    "sector": "Energy & Extractives",
+    "sector_classification": "world_bank_sector",
+    "amount_usd": 500000000,
+    "amount_usd_b": 0.5,
+    "amount_source": "totalamt",
+    "year": 2021,
+    "approval_date": "2021-12-21T00:00:00Z",
+    "status": "Active",
+    "lending_instrument": "Program-for-Results Financing",
+    "recipient": {
+      "country": "Bangladesh",
+      "country_code": "BD",
+      "coords": [
+        90.4113,
+        23.7055
+      ],
+      "all_country_codes": [
+        "BD"
+      ],
+      "all_country_names": [
+        "People's Republic of Bangladesh"
+      ]
+    },
+    "funders": [
+      {
+        "entity": "World Bank Group",
+        "country": "World Bank Group",
+        "instruments": [
+          "IBRD"
+        ],
+        "coords": [
+          -77.0369,
+          38.9072
+        ],
+        "amount_usd_b": 0.5
+      }
+    ],
+    "source": {
+      "provider": "World Bank Projects & Operations",
+      "project_id": "P174650",
+      "url": "https://projects.worldbank.org/en/projects-operations/project-detail/P174650"
+    },
+    "last_updated": "2021-12-24 00:00:00.0",
+    "observed_at": "2026-08-02T07:30:16+00:00"
+  },
+  {
+    "id": "P176164",
+    "name": "Inclusive Connectivity and Development Project",
+    "sector": "Urban Development",
+    "sector_classification": "world_bank_sector",
+    "amount_usd": 500000000,
+    "amount_usd_b": 0.5,
+    "amount_source": "totalamt",
+    "year": 2021,
+    "approval_date": "2021-09-30T00:00:00Z",
+    "status": "Active",
+    "lending_instrument": "Investment Project Financing",
+    "recipient": {
+      "country": "Sri Lanka",
+      "country_code": "LK",
+      "coords": [
+        79.8528,
+        6.92148
+      ],
+      "all_country_codes": [
+        "LK"
+      ],
+      "all_country_names": [
+        "Democratic Socialist Republic of Sri Lan"
+      ]
+    },
+    "funders": [
+      {
+        "entity": "World Bank Group",
+        "country": "World Bank Group",
+        "instruments": [
+          "IBRD"
+        ],
+        "coords": [
+          -77.0369,
+          38.9072
+        ],
+        "amount_usd_b": 0.5
+      }
+    ],
+    "source": {
+      "provider": "World Bank Projects & Operations",
+      "project_id": "P176164",
+      "url": "https://projects.worldbank.org/en/projects-operations/project-detail/P176164"
+    },
+    "last_updated": "2021-10-03 00:00:00.0",
+    "observed_at": "2026-08-02T07:30:16+00:00"
+  },
+  {
+    "id": "P179684",
+    "name": "Sustainable Power and Irrigation for Nigeria Project",
+    "sector": "Energy & Extractives",
+    "sector_classification": "project_name_inference",
+    "amount_usd": 500000000,
+    "amount_usd_b": 0.5,
+    "amount_source": "totalamt",
+    "year": 2024,
+    "approval_date": "2024-09-26T00:00:00Z",
+    "status": "Active",
+    "lending_instrument": "Investment Project Financing",
+    "recipient": {
+      "country": "Nigeria",
+      "country_code": "NG",
+      "coords": [
+        7.48906,
+        9.05804
+      ],
+      "all_country_codes": [
+        "NG"
+      ],
+      "all_country_names": [
+        "Federal Republic of Nigeria"
+      ]
+    },
+    "funders": [
+      {
+        "entity": "World Bank Group",
+        "country": "World Bank Group",
+        "instruments": [
+          "IBRD"
+        ],
+        "coords": [
+          -77.0369,
+          38.9072
+        ],
+        "amount_usd_b": 0.5
+      }
+    ],
+    "source": {
+      "provider": "World Bank Projects & Operations",
+      "project_id": "P179684",
+      "url": "https://projects.worldbank.org/en/projects-operations/project-detail/P179684"
+    },
+    "last_updated": "2024-09-29 00:00:00.0",
+    "observed_at": "2026-08-02T07:30:16+00:00"
+  },
+  {
+    "id": "P179981",
+    "name": "Sindh Flood Emergency Rehabilitation Project",
+    "sector": "Water Infrastructure",
+    "sector_classification": "world_bank_sector",
+    "amount_usd": 500000000,
+    "amount_usd_b": 0.5,
+    "amount_source": "totalamt",
+    "year": 2022,
+    "approval_date": "2022-12-19T00:00:00Z",
+    "status": "Active",
+    "lending_instrument": "Investment Project Financing",
+    "recipient": {
+      "country": "Pakistan",
+      "country_code": "PK",
+      "coords": [
+        72.8,
+        30.5167
+      ],
+      "all_country_codes": [
+        "PK"
+      ],
+      "all_country_names": [
+        "Islamic Republic of Pakistan"
+      ]
+    },
+    "funders": [
+      {
+        "entity": "World Bank Group",
+        "country": "World Bank Group",
+        "instruments": [
+          "IBRD"
+        ],
+        "coords": [
+          -77.0369,
+          38.9072
+        ],
+        "amount_usd_b": 0.5
+      }
+    ],
+    "source": {
+      "provider": "World Bank Projects & Operations",
+      "project_id": "P179981",
+      "url": "https://projects.worldbank.org/en/projects-operations/project-detail/P179981"
+    },
+    "last_updated": "2022-12-20 00:00:00.0",
+    "observed_at": "2026-08-02T07:30:16+00:00"
+  },
+  {
+    "id": "P180008",
+    "name": "Sindh Flood Emergency Housing Reconstruction Project",
+    "sector": "Urban Development",
+    "sector_classification": "world_bank_sector",
+    "amount_usd": 500000000,
+    "amount_usd_b": 0.5,
+    "amount_source": "totalamt",
+    "year": 2022,
+    "approval_date": "2022-12-19T00:00:00Z",
+    "status": "Active",
+    "lending_instrument": "Investment Project Financing",
+    "recipient": {
+      "country": "Pakistan",
+      "country_code": "PK",
+      "coords": [
+        72.8,
+        30.5167
+      ],
+      "all_country_codes": [
+        "PK"
+      ],
+      "all_country_names": [
+        "Islamic Republic of Pakistan"
+      ]
+    },
+    "funders": [
+      {
+        "entity": "World Bank Group",
+        "country": "World Bank Group",
+        "instruments": [
+          "IBRD"
+        ],
+        "coords": [
+          -77.0369,
+          38.9072
+        ],
+        "amount_usd_b": 0.5
+      }
+    ],
+    "source": {
+      "provider": "World Bank Projects & Operations",
+      "project_id": "P180008",
+      "url": "https://projects.worldbank.org/en/projects-operations/project-detail/P180008"
+    },
+    "last_updated": "2022-12-20 00:00:00.0",
+    "observed_at": "2026-08-02T07:30:16+00:00"
+  },
+  {
+    "id": "P180319",
+    "name": "Ecuador Third Green and Resilient Recovery DPF (EGARR-DPF3)",
+    "sector": "Energy & Extractives",
+    "sector_classification": "world_bank_sector",
+    "amount_usd": 500000000,
+    "amount_usd_b": 0.5,
+    "amount_source": "totalamt",
+    "year": 2023,
+    "approval_date": "2023-08-04T00:00:00Z",
+    "status": "Active",
+    "lending_instrument": "Development Policy Lending",
+    "recipient": {
+      "country": "Ecuador",
+      "country_code": "EC",
+      "coords": [
+        -78.5243,
+        -0.229498
+      ],
+      "all_country_codes": [
+        "EC"
+      ],
+      "all_country_names": [
+        "Republic of Ecuador"
+      ]
+    },
+    "funders": [
+      {
+        "entity": "World Bank Group",
+        "country": "World Bank Group",
+        "instruments": [
+          "IBRD"
+        ],
+        "coords": [
+          -77.0369,
+          38.9072
+        ],
+        "amount_usd_b": 0.5
+      }
+    ],
+    "source": {
+      "provider": "World Bank Projects & Operations",
+      "project_id": "P180319",
+      "url": "https://projects.worldbank.org/en/projects-operations/project-detail/P180319"
+    },
+    "last_updated": "2023-08-08 00:00:00.0",
+    "observed_at": "2026-08-02T07:30:16+00:00"
+  }
+]

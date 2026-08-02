@@ -37,6 +37,9 @@
   .brand{display:flex; flex-direction:column; line-height:1;}
   .brand .mark{font-family:'Fraunces',serif; font-size:19px; font-weight:600; letter-spacing:0.01em; color:var(--paper);}
   .brand .sub{font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.12em; color:var(--gold); text-transform:uppercase; margin-top:3px;}
+  .brand .data-version{font-family:'IBM Plex Mono',monospace; font-size:8px; letter-spacing:0.08em; color:var(--steel); text-transform:uppercase; margin-top:4px;}
+  .brand .data-version.live{color:#8fc49b;}
+  .brand .data-version.fallback{color:#e8a86b;}
   .divider{width:1px; height:30px; background:var(--line);}
   .control{display:flex; flex-direction:column; gap:4px;}
   .control label{font-family:'IBM Plex Mono',monospace; font-size:9px; letter-spacing:0.1em; text-transform:uppercase; color:var(--steel);}
@@ -148,6 +151,9 @@
   .funder-row .f-amt{font-family:'IBM Plex Mono',monospace; color:var(--gold-bright); font-size:12px;}
   #drawer .d-note{font-family:'Inter',sans-serif; font-size:12.5px; color:var(--steel); line-height:1.5; margin-top:4px;}
   #drawer .d-status{display:inline-block; margin-top:14px; font-family:'IBM Plex Mono',monospace; font-size:10px; padding:4px 9px; border:1px solid var(--gold); color:var(--gold-bright); border-radius:20px;}
+  #drawer .d-source{margin-top:14px; font-family:'IBM Plex Mono',monospace; font-size:10px; line-height:1.5; color:var(--steel);}
+  #drawer .d-source a{color:var(--gold-bright); text-decoration:none;}
+  #drawer .d-source a:hover{text-decoration:underline;}
 
   /* ---------- schema panel ---------- */
   #schemaPanel{
@@ -182,6 +188,7 @@
     <div class="brand">
       <div class="mark">Capital Flow Atlas</div>
       <div class="sub">Global Capex &amp; Financing Tracker</div>
+      <div class="data-version" id="dataStatus">RD Mark 2 · loading real data</div>
     </div>
     <div class="divider"></div>
     <div class="control">
@@ -212,17 +219,17 @@
   <div id="tooltip"></div>
 
   <div id="legend">
-    <div class="lg-title">Capex intensity by recipient market / region</div>
+    <div class="lg-title">Reported project value by recipient market</div>
     <div class="lg-scale"></div>
     <div class="lg-labels"><span>No tracked data</span><span>Highest</span></div>
-    <div class="lg-arc-row"><div class="lg-arc-swatch"></div><span>Capital / contractor flow</span></div>
+    <div class="lg-arc-row"><div class="lg-arc-swatch"></div><span>Financing / contractor flow</span></div>
     <div class="lg-arc-row" style="margin-top:6px;"><span id="mapHint" style="color:var(--steel-dim);">Drag to rotate · scroll to zoom</span></div>
     <div class="lg-note">Names and boundaries are shown for geographic reference only and do not imply a position on sovereignty.</div>
   </div>
 
   <div id="stats">
     <div class="s-num" id="statTotal">$0B</div>
-    <div class="s-label">Tracked capex</div>
+    <div class="s-label">Reported project value</div>
     <div class="s-sub" id="statSub">0 projects · 0 countries</div>
   </div>
 
@@ -347,9 +354,55 @@ document.getElementById('schemaCode').textContent = JSON.stringify([SCHEMA_EXAMP
 // =====================================================================
 // STATE
 // =====================================================================
-let DATA = SAMPLE_DATA;
+let DATA = [];
+let SOURCE_DATA = [];
+let SOURCE_RECORD_COUNT = 0;
+let UNMAPPED_RECORD_COUNT = 0;
+let DATA_META = null;
 let showHeat = true, showFlow = true, showSpin = true, sectorSel = "all", mapMode = "globe";
 let worldFeatures = null;
+
+function validCoords(coords){
+  return Array.isArray(coords) && coords.length === 2 && coords.every(Number.isFinite);
+}
+
+function prepareProjects(records){
+  SOURCE_DATA = records;
+  SOURCE_RECORD_COUNT = records.length;
+  const mapped = records.filter(p => validCoords(p?.recipient?.coords)).map(p => ({
+    ...p,
+    note: p.note || `World Bank project record. Sector classification: ${(p.sector_classification || "not stated").replaceAll("_", " ")}.`,
+    funders: (p.funders || [])
+      .filter(f => validCoords(f.coords))
+      .map(f => ({ ...f, country: f.country || f.entity || "World Bank Group" }))
+  }));
+  UNMAPPED_RECORD_COUNT = SOURCE_RECORD_COUNT - mapped.length;
+  return mapped;
+}
+
+async function loadDefaultData(){
+  const status = document.getElementById("dataStatus");
+  try {
+    const [projectsResponse, metadataResponse] = await Promise.all([
+      fetch("./data/projects.json"),
+      fetch("./data/rd-mark-1-metadata.json")
+    ]);
+    if (!projectsResponse.ok || !metadataResponse.ok) throw new Error("Real-data files are unavailable");
+    const projects = await projectsResponse.json();
+    DATA_META = await metadataResponse.json();
+    if (!Array.isArray(projects) || !projects.length) throw new Error("Real-data file is empty");
+    DATA = prepareProjects(projects);
+    status.textContent = `RD Mark 2 · live World Bank data · ${DATA.length}/${SOURCE_RECORD_COUNT} mapped`;
+    status.classList.add("live");
+    render();
+  } catch (error) {
+    DATA = prepareProjects(SAMPLE_DATA);
+    status.textContent = "RD Mark 2 · sample fallback";
+    status.classList.add("fallback");
+    console.warn("Could not load RD Mark 1 data; using embedded sample.", error);
+    render();
+  }
+}
 
 const svg = d3.select("#map");
 
@@ -503,7 +556,10 @@ const NAME_ALIASES = {
   "United States": ["United States of America", "United States"],
   "United Kingdom": ["United Kingdom", "United Kingdom of Great Britain and Northern Ireland"],
   "South Korea": ["South Korea", "Korea, Rep.", "Republic of Korea"],
-  "Russia": ["Russian Federation", "Russia"]
+  "Russia": ["Russian Federation", "Russia"],
+  "Turkiye": ["Turkey", "Türkiye", "Turkiye"],
+  "Congo, Democratic Republic of": ["Dem. Rep. Congo", "Democratic Republic of the Congo", "Congo, Democratic Republic of"],
+  "Tanzania": ["Tanzania", "United Republic of Tanzania"]
 };
 function displayCountryName(name){
   return name;
@@ -545,6 +601,7 @@ function populateSectorFilter(){
   sel.selectAll("option.dyn").remove();
   sel.selectAll("option.dyn").data(sectors).join("option")
     .attr("class","dyn").attr("value", d=>d).text(d=>d);
+  sel.property("value", sectorSel);
 }
 
 function heatColor(name){
@@ -558,6 +615,7 @@ function heatColor(name){
 function render(){
   populateSectorFilter();
   const active = DATA.filter(matchesSector);
+  const sourceActive = SOURCE_DATA.filter(matchesSector);
 
   // countries
   if (worldFeatures){
@@ -633,10 +691,10 @@ function render(){
     .each(function(){ animatePulse(this); });
 
   // stats
-  const total = d3.sum(active, p => p.amount_usd_b);
-  const countries = new Set(active.map(p => p.recipient.country)).size;
+  const total = d3.sum(sourceActive, p => p.amount_usd_b);
+  const countries = new Set(sourceActive.map(p => p.recipient.country)).size;
   document.getElementById("statTotal").textContent = "$" + total.toFixed(1) + "B";
-  document.getElementById("statSub").textContent = `${active.length} project${active.length!==1?'s':''} · ${countries} market${countries!==1?'s':''}`;
+  document.getElementById("statSub").textContent = `${active.length}/${sourceActive.length} mapped records · ${countries} recipient${countries!==1?'s':''}`;
 }
 
 function animateFlow(node){
@@ -693,16 +751,23 @@ function openDrawer(d){
       <span class="f-amt">${fmtB(f.amount_usd_b)}</span>
     </div>`).join("") || `<div class="d-note">Domestically financed — no cross-border capital tracked.</div>`;
 
+  const sourceLink = d.source?.url
+    ? `<a href="${d.source.url}" target="_blank" rel="noopener">Open World Bank source ↗</a>`
+    : "Source link unavailable";
+  const amountSource = (d.amount_source || "not stated").replaceAll("_", " ");
+  const classification = (d.sector_classification || "not stated").replaceAll("_", " ");
+
   document.getElementById("drawerContent").innerHTML = `
     <div class="d-eyebrow">${d.sector} · ${d.year}</div>
     <div class="d-title">${d.name}</div>
     <div class="d-loc">${displayCountryName(d.recipient.country)}</div>
     <div class="d-capex">${fmtB(d.amount_usd_b)}</div>
-    <div class="d-capex-label">Total tracked capex</div>
+    <div class="d-capex-label">Reported project amount · not annual disbursement</div>
     <div class="d-note">${d.note||""}</div>
     <div class="d-status">${d.status||""}</div>
-    <div class="d-section-title">Capital / contractor origin</div>
+    <div class="d-section-title">Financing origin</div>
     ${funders}
+    <div class="d-source">Amount field: ${amountSource}<br>Sector method: ${classification}<br>Location: representative country point<br>${sourceLink}</div>
   `;
   document.getElementById("drawer").classList.add("open");
 }
@@ -755,9 +820,13 @@ document.getElementById("fileInput").addEventListener("change", (e) => {
     try {
       const parsed = JSON.parse(ev.target.result);
       if (!Array.isArray(parsed) || !parsed.length) throw new Error("Expected a non-empty JSON array of projects.");
-      DATA = parsed;
+      DATA_META = null;
+      DATA = prepareProjects(parsed);
       sectorSel = "all";
       document.getElementById("sectorFilter").value = "all";
+      const status = document.getElementById("dataStatus");
+      status.textContent = `Custom data · ${DATA.length}/${SOURCE_RECORD_COUNT} mapped`;
+      status.classList.remove("live", "fallback");
       render();
     } catch(err){
       alert("Couldn't load that file: " + err.message + "\n\nCheck the schema (top bar → { } Schema) and try again.");
@@ -765,6 +834,8 @@ document.getElementById("fileInput").addEventListener("change", (e) => {
   };
   reader.readAsText(file);
 });
+
+loadDefaultData();
 </script>
 </body>
 </html>
